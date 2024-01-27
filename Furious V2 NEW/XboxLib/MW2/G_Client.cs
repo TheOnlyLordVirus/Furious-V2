@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Text;
 
 using XDevkit;
@@ -62,13 +61,55 @@ internal sealed class G_Client
 
         set
         {
-            if (value.Length > _maxNameCharCount)
-                value = value.AsSpan()
-                             .Slice(0, _maxNameCharCount)
-                             .ToString();
-
+#if TestSetMemory_cpp
             Span<byte> nameBytes = stackalloc byte[_maxNameCharCount];
-            nameBytes = Encoding.ASCII.GetBytes(value);
+            
+            unsafe
+            {
+                fixed (char* charPtr = value)
+                fixed (byte* bytePtr = nameBytes)
+                {
+                    Encoding.ASCII
+                        .GetBytes
+                        (
+                            charPtr,
+                            (value.Length > _maxNameCharCount) ? _maxNameCharCount : value.Length,
+                            bytePtr,
+                            _maxNameCharCount
+                        );
+
+                    _xboxConsole
+                        .DebugTarget
+                        .SetMemory_cpp
+                        (
+                            _correctedNameAddress,
+                            (uint)nameBytes.Length,
+                            ref bytePtr[0], // I wonder if this works?
+                            out _
+                        );
+                }
+#else
+            Span<byte> nameBytes = stackalloc byte[_maxNameCharCount];
+            
+            if (value.Length > _maxNameCharCount)
+            {
+                unsafe
+                {
+                    fixed (char* charPtr = value)
+                    fixed (byte* bytePtr = nameBytes)
+                        Encoding.ASCII
+                        .GetBytes
+                        (
+                            charPtr,
+                            _maxNameCharCount,
+                            bytePtr,
+                            _maxNameCharCount
+                        );
+                }
+            }
+
+            else
+                nameBytes = Encoding.ASCII.GetBytes(value);
 
             _xboxConsole
                 .DebugTarget
@@ -79,6 +120,7 @@ internal sealed class G_Client
                     nameBytes.ToArray(),
                     out _
                 );
+#endif
         }
     }
 
