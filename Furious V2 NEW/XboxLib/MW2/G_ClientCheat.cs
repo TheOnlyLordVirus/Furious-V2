@@ -8,7 +8,7 @@ using LordVirusMw2XboxLib;
 
 #nullable enable
 
-internal class G_ClientCheat : IGameCheat
+internal sealed class G_ClientCheat : IGameCheat
 {
     private uint CorrectedCheatAddress =>
         (uint)G_ClientStructOffsets.Array_BaseAddress +
