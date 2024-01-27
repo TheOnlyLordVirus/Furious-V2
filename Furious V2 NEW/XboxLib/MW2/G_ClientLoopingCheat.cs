@@ -13,21 +13,21 @@ using LordVirusMw2XboxLib;
 internal sealed class G_ClientLoopingCheat : IGameCheat
 {
     private uint CorrectedCheatAddress =>
-        (uint)G_ClientStructOffsets.Array_BaseAddress +
-        ((uint)G_ClientStructOffsets.StructSize * (uint)_clientIndex) +
-        (uint)_cheatOffset;
+        G_ClientStructOffset.Array_BaseAddress +
+            (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
+                _cheatOffset;
 
     private CancellationTokenSource? _updaterCancellationTokenSource = new CancellationTokenSource();
 
     private readonly IXboxConsole _xboxConsole;
-    private readonly G_ClientStructOffsets _cheatOffset;
+    private readonly G_ClientStructOffset _cheatOffset;
 
     private bool _enabled = false;
 
     private readonly string? _cheatName;
-    private readonly int _clientIndex = 0;
+    private readonly int _clientNumber = 0;
     private readonly uint _byteCount = 1;
-
+     
     private readonly bool _usingBytes = true;
     private readonly byte[]? _onBytes;
     private readonly byte[]? _offBytes;
@@ -36,7 +36,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
 
     public G_ClientLoopingCheat(
         IXboxConsole xboxConsole,
-        G_ClientStructOffsets cheatOffset,
+        G_ClientStructOffset cheatOffset,
         int clientIndex,
         byte onByte = 0x01,
         byte offByte = 0x00,
@@ -44,7 +44,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
     {
         _xboxConsole = xboxConsole;
         _cheatOffset = cheatOffset;
-        _clientIndex = clientIndex;
+        _clientNumber = clientIndex;
 
         _onBytes = [onByte];
         _offBytes = [offByte];
@@ -54,7 +54,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
 
     public G_ClientLoopingCheat(
         IXboxConsole xboxConsole,
-        G_ClientStructOffsets cheatOffset,
+        G_ClientStructOffset cheatOffset,
         int clientIndex,
         byte[] onBytes,
         byte[] offBytes,
@@ -62,7 +62,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
     {
         _xboxConsole = xboxConsole;
         _cheatOffset = cheatOffset;
-        _clientIndex = clientIndex;
+        _clientNumber = clientIndex;
 
         _onBytes = onBytes;
         _offBytes = offBytes;
@@ -77,7 +77,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
         string? cheatName = null)
     {
         _xboxConsole = xboxConsole;
-        _clientIndex = clientIndex;
+        _clientNumber = clientIndex;
 
         _onBytes = null;
         _offBytes = null;
@@ -95,7 +95,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
         string? cheatName = null)
     {
         _xboxConsole = xboxConsole;
-        _clientIndex = clientIndex;
+        _clientNumber = clientIndex;
 
         _onBytes = null;
         _offBytes = null;
@@ -111,7 +111,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
         try
         {
             if (_cheatName is not null)
-                Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^2Enabled", _clientIndex);
+                Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^2Enabled", _clientNumber);
 
             do
             {
@@ -138,7 +138,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
             _enabled = false;
 
             if (_cheatName is not null)
-                Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^1Disabled", _clientIndex);
+                Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^1Disabled", _clientNumber);
         }
     }
 

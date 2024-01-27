@@ -12,8 +12,9 @@ namespace LordVirusMw2XboxLib;
 
 internal sealed class G_Client
 {
-    private const int _maxNameCharCount = 35;
+    private const int _maxNameCharCount = 32;
 
+    // Note: 0x00 is the default off byte state.
     private const byte _redBoxesOn = 0x55;
     private const byte _thermalRedBoxesOn = 0x99;
     private const byte _ufoModeOn = 0x02;
@@ -132,15 +133,15 @@ internal sealed class G_Client
         _xboxConsole = xbox;
         _clientIndex = clientIndex;
 
-        _correctedNameAddress =
-            (uint)((uint)G_ClientStructOffsets.Array_BaseAddress +
-            ((uint)G_ClientStructOffsets.StructSize * _clientIndex) +
-            (uint)G_ClientStructOffsets.Name);
+        _correctedNameAddress = (UInt32)
+                (G_ClientStructOffset.Array_BaseAddress +
+                    (G_ClientStructOffset.StructSize * _clientIndex) +
+                        G_ClientStructOffset.Name);
 
         _redboxes = new G_ClientCheat
             (
                 _xboxConsole,
-                G_ClientStructOffsets.Redboxes,
+                G_ClientStructOffset.Redboxes,
                 _clientIndex, 
                 onByte: _redBoxesOn, 
                 cheatName: "Red Boxes"
@@ -150,7 +151,7 @@ internal sealed class G_Client
         _thermalRedboxes = new G_ClientCheat
             (
                 _xboxConsole, 
-                G_ClientStructOffsets.Redboxes, 
+                G_ClientStructOffset.Redboxes, 
                 _clientIndex, 
                 onByte: _thermalRedBoxesOn, 
                 cheatName: "Thermal Red Boxes"
@@ -160,7 +161,7 @@ internal sealed class G_Client
         _godmode = new G_ClientCheat
             (
                 _xboxConsole,
-                G_ClientStructOffsets.Godmode, 
+                G_ClientStructOffset.Godmode, 
                 _clientIndex, 
                 onBytes: _godModeOn,
                 offBytes: _godModeOff, 
@@ -170,7 +171,7 @@ internal sealed class G_Client
         _noRecoil = new G_ClientCheat
             (
                 _xboxConsole, 
-                G_ClientStructOffsets.NoRecoil, 
+                G_ClientStructOffset.NoRecoil, 
                 _clientIndex, 
                 onByte: _noRecoilOn, 
                 cheatName: "No Recoil"
@@ -179,7 +180,7 @@ internal sealed class G_Client
         _noClip = new G_ClientCheat
             (
                 _xboxConsole, 
-                G_ClientStructOffsets.MovementFlag, 
+                G_ClientStructOffset.MovementFlag, 
                 _clientIndex,
                 onByte: _noClipOn, 
                 cheatName: "No Clip"
@@ -188,7 +189,7 @@ internal sealed class G_Client
         _ufoMode = new G_ClientCheat
             (
                 _xboxConsole, 
-                G_ClientStructOffsets.MovementFlag, 
+                G_ClientStructOffset.MovementFlag, 
                 _clientIndex, 
                 onByte: _ufoModeOn, 
                 cheatName: "Ufo Mode"
@@ -197,7 +198,7 @@ internal sealed class G_Client
         _primaryAkimbo = new G_ClientCheat
             (
                 _xboxConsole, 
-                G_ClientStructOffsets.PrimaryAkimbo,
+                G_ClientStructOffset.PrimaryAkimbo,
                 _clientIndex, 
                 cheatName: "Primary Akimbo"
             );
@@ -205,7 +206,7 @@ internal sealed class G_Client
         _secondaryAkimbo = new G_ClientCheat
             (
                 _xboxConsole, 
-                G_ClientStructOffsets.SecondaryAkimbo, 
+                G_ClientStructOffset.SecondaryAkimbo, 
                 _clientIndex, 
                 cheatName: "Secondary Akimbo"
             );
@@ -213,7 +214,7 @@ internal sealed class G_Client
         _allPerks = new G_ClientLoopingCheat
             (
                 _xboxConsole, 
-                G_ClientStructOffsets.AllPerks, 
+                G_ClientStructOffset.AllPerks, 
                 _clientIndex, 
                 onBytes: _allPerksOn, 
                 offBytes: _allPerksOff, 
@@ -232,7 +233,7 @@ internal sealed class G_Client
         DebugCheat = new G_ClientCheat
             (
                 _xboxConsole, 
-                G_ClientStructOffsets.DebugOffset, 
+                G_ClientStructOffset.DebugOffset, 
                 _clientIndex, 
                 onBytes: [0x00, 0x01], 
                 offBytes: [0x00, 0x00], 
@@ -247,15 +248,15 @@ internal sealed class G_Client
         {
             const byte offsetCount = 6;
 
-            var infAmmoOffsets = new G_ClientStructOffsets[offsetCount];
+            var infAmmoOffsets = new G_ClientStructOffset[offsetCount];
 
             byte index = 0;
-            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo1; index++;
-            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo2; index++;
-            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo3; index++;
-            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo4; index++;
-            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo5; index++;
-            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo6; index++;
+            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo1; index++;
+            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo2; index++;
+            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo3; index++;
+            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo4; index++;
+            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo5; index++;
+            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo6; index++;
 
             var infAmmoGameCheats = new IGameCheat[offsetCount];
 

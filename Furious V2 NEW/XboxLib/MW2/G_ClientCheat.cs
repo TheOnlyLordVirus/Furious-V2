@@ -10,13 +10,13 @@ using LordVirusMw2XboxLib;
 
 internal sealed class G_ClientCheat : IGameCheat
 {
-    private uint CorrectedCheatAddress =>
-        (uint)G_ClientStructOffsets.Array_BaseAddress +
-        ((uint)G_ClientStructOffsets.StructSize * (uint)_clientNumber) +
-        (uint)_cheatOffset;
+    private uint CorrectedCheatAddress => 
+        G_ClientStructOffset.Array_BaseAddress + 
+            (G_ClientStructOffset.StructSize * (uint)_clientNumber) + 
+                _cheatOffset;
 
     private readonly IXboxConsole _xboxConsole;
-    private readonly G_ClientStructOffsets _cheatOffset;
+    private readonly G_ClientStructOffset _cheatOffset;
 
     private bool _enabled = false;
 
@@ -30,7 +30,7 @@ internal sealed class G_ClientCheat : IGameCheat
     public G_ClientCheat
     (
         IXboxConsole xboxConsole,
-        G_ClientStructOffsets cheatOffset,
+        G_ClientStructOffset cheatOffset,
         int clientNumber,
         byte onByte = 0x01,
         byte offByte = 0x00,
@@ -49,7 +49,7 @@ internal sealed class G_ClientCheat : IGameCheat
     public G_ClientCheat
     (
         IXboxConsole xboxConsole,
-        G_ClientStructOffsets cheatOffset,
+        G_ClientStructOffset cheatOffset,
         int clientNumber,
         byte[] onBytes,
         byte[] offBytes,
