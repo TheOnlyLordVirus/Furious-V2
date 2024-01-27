@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 
 using XDevkit;
-
 using XDRPCPlusPlus;
 
 namespace LordVirusMw2XboxLib;
