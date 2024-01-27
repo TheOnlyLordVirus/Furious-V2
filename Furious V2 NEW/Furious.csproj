@@ -102,7 +102,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RPC.cs" />
-    <Compile Include="XboxLib\G_Client.cs" />
+    <Compile Include="XboxLib\MW2\G_Client.cs" />
+    <Compile Include="XboxLib\MW2\G_ClientCheat.cs" />
+    <Compile Include="XboxLib\MW2\G_ClientLoopingCheat.cs" />
+    <Compile Include="XboxLib\MW2\G_ClientStructOffsets.cs" />
+    <Compile Include="XboxLib\MW2\IGameCheat.cs" />
+    <Compile Include="XboxLib\MW2\Mw2GameFunctions.cs" />
     <Compile Include="XboxLib\XDRPC\MarshalingUtils.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCArgumentInfo.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCException.cs" />
@@ -162,6 +167,7 @@
     <Content Include="favicon.ico" />
     <Content Include="XboxLib\XDevkit.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

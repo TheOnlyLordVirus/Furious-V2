@@ -13,7 +13,7 @@ using System.IO;
 using System.Threading;
 
 using XDevkit;
-using LordVirusXboxLib;
+using LordVirusMw2XboxLib;
 
 using GroupBox = System.Windows.Forms.GroupBox;
 
