@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Furious_V2_NEW.Properties {
+namespace Furious.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

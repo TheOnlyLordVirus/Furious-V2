@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Furious_V2_NEW
+namespace Furious
 {
     public class ColorComboBox : ComboBox
     {

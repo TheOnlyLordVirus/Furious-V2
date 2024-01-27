@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -10,6 +11,8 @@ using XDRPC;
 using XDRPCPlusPlus;
 
 namespace LordVirusXboxLib;
+
+#nullable enable
 
 //gclient_s
 //{
@@ -51,15 +54,15 @@ internal enum G_ClientStructOffsets : uint
     Array_BaseAddress = 0x830CBF80,
     StructSize = 0x3700,
     Redboxes = 0x13,
+    PlayerOrgin = 0x1C,
     Name = 0x3290,
     Godmode = 0x3228,
     NoRecoil = 0x2BE,
     MovementFlag = 0x3423,
-    //PrimeAkimbo = 0x267,
-    //SecondaryAkimbo = 0x25D,
-    //AllPerks = 0x428,
+    PrimaryAkimbo = 0x1C,
+    SecondaryAkimbo = 0x25D,
+    AllPerks = 0x428,
     //ModGun = 0x3243,
-    //Teleport = 0x24,
     InfAmmo1 = 0x2EC,
     InfAmmo2 = 0x2DC,
     InfAmmo3 = 0x354,
@@ -120,6 +123,9 @@ internal sealed class G_Client
     private static readonly byte[] _godModeOn = [0x00, 0xFF, 0xFF, 0xFF];
     private static readonly byte[] _godModeOff = [0x00, 0x00, 0x00, 0x64];
 
+    private static readonly byte[] _allPerksOn = [0xFF, 0xFF];
+    private static readonly byte[] _allPerksOff = [0x00, 0x00];
+
     private readonly IXboxConsole _xboxConsole;
     public IXboxConsole XboxConsole
     {
@@ -178,14 +184,6 @@ internal sealed class G_Client
             ((uint)G_ClientStructOffsets.StructSize * _clientIndex) +
             (uint)G_ClientStructOffsets.Name);
 
-        Internal_ConfigureCheatImplmentations();
-    }
-
-    // TODO: Get the in game check for the current client without RPC calling GetDvarBool.
-    // TODO: Fix missing G_Client mods / addresses
-    // TODO: Add magic bullets for clients.
-    private void Internal_ConfigureCheatImplmentations()
-    {
         _redboxes = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.Redboxes, _clientIndex, onByte: _redBoxesOn, cheatName: "Red Boxes");
         _thermalRedboxes = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.Redboxes, _clientIndex, onByte: _thermalRedBoxesOn, cheatName: "Thermal Red Boxes");
         _godmode = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.Godmode, _clientIndex, onBytes: _godModeOn, offBytes: _godModeOff, cheatName: "God Mode");
@@ -193,65 +191,64 @@ internal sealed class G_Client
         _noClip = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.MovementFlag, _clientIndex, onByte: _noClipOn, cheatName: "No Clip");
         _ufoMode = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.MovementFlag, _clientIndex, onByte: _ufoModeOn, cheatName: "Ufo Mode");
 
-        //_primaryAkimbo = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.PrimeAkimbo);
-        //_secondaryAkimbo = new G_ClientCheat(_xboxConsole, _clientIndex, G_ClientStructOffsets.SecondaryAkimbo); // Freezes xbox
+        _primaryAkimbo = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.PrimaryAkimbo, _clientIndex, cheatName: "Primary Akimbo");
+        _secondaryAkimbo = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.SecondaryAkimbo, _clientIndex, cheatName: "Secondary Akimbo");
 
-        _infiniteAmmo = new G_ClientInfiniteAmmo(_xboxConsole, _clientIndex);
+        _allPerks = new G_ClientLoopingCheat(_xboxConsole, G_ClientStructOffsets.AllPerks, _clientIndex, onBytes: _allPerksOn, offBytes: _allPerksOff, cheatName: "All Perks");
+
+        _infiniteAmmo = new G_ClientLoopingCheat(_xboxConsole, _clientIndex, new G_ClientInfiniteAmmo(_xboxConsole, _clientIndex), cheatName: "Infinite Ammo");
 
 #if DEBUG
         DebugCheat = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.DebugOffset, _clientIndex);
 #endif
     }
 
-#if DEBUG
-    public IGameCheat? DebugCheat;
-#endif
+    // TODO: Get the in game check for the current client without RPC calling GetDvarBool.
+    // TODO: Fix missing G_Client mods / addresses
+    // TODO: Add magic bullets for clients.
 
-    private IGameCheat? _redboxes;
-    public IGameCheat? Redboxes => _redboxes;
-
-    private IGameCheat? _thermalRedboxes;
-    public IGameCheat? ThermalRedboxes => _thermalRedboxes;
-
-    private IGameCheat? _godmode;
-    public IGameCheat? Godmode => _godmode;
-
-    private IGameCheat? _noRecoil;
-    public IGameCheat? NoRecoil => _noRecoil;
-
-    private IGameCheat? _noClip;
-    public IGameCheat? NoClip => _noClip;
-
-    private IGameCheat? _ufoMode;
-    public IGameCheat? UfoMode => _ufoMode;
-
-    // TODO: different implmentation for these cheats.
     //private IGameCheat? _teleport;
     //public IGameCheat? Teleport;
 
     //private IGameCheat? _killstreakBullet;
     //public IGameCheat? KillstreakBullet => _killstreakBullet;
 
-    //private IGameCheat? _primaryAkimbo;
-    //public IGameCheat? PrimaryAkimbo => _primaryAkimbo;
+#if DEBUG
+    public IGameCheat? DebugCheat;
+#endif
 
-    //private IGameCheat? _secondaryAkimbo;
-    //public IGameCheat? SecondaryAkimbo => _secondaryAkimbo;
+    private readonly IGameCheat _redboxes;
+    public IGameCheat Redboxes => _redboxes;
 
-    //private IGameCheat? _allPerks;
-    //public IGameCheat? AllPerks => _allPerks;
+    private readonly IGameCheat _thermalRedboxes;
+    public IGameCheat ThermalRedboxes => _thermalRedboxes;
+
+    private readonly IGameCheat _godmode;
+    public IGameCheat Godmode => _godmode;
+
+    private readonly IGameCheat _noRecoil;
+    public IGameCheat NoRecoil => _noRecoil;
+
+    private readonly IGameCheat _noClip;
+    public IGameCheat NoClip => _noClip;
+
+    private readonly IGameCheat _ufoMode;
+    public IGameCheat UfoMode => _ufoMode;
+
+    private readonly IGameCheat _primaryAkimbo;
+    public IGameCheat PrimaryAkimbo => _primaryAkimbo;
+
+    private readonly IGameCheat _secondaryAkimbo;
+    public IGameCheat SecondaryAkimbo => _secondaryAkimbo;
+
+    private readonly IGameCheat _allPerks;
+    public IGameCheat AllPerks => _allPerks;
 
     //private IGameCheat? _modGun;
     //public IGameCheat? ModGun => _modGun;
 
-    private IGameCheat? _infAmmo1;
-    private IGameCheat? _infAmmo2;
-    private IGameCheat? _infAmmo3;
-    private IGameCheat? _infAmmo4;
-    private IGameCheat? _infAmmo5;
-    private IGameCheat? _infAmmo6;
-    private G_ClientInfiniteAmmo? _infiniteAmmo;
-    public IGameCheat? InfiniteAmmo => _infiniteAmmo;
+    private IGameCheat _infiniteAmmo;
+    public IGameCheat InfiniteAmmo => _infiniteAmmo;
 }
 
 internal interface IGameCheat
@@ -271,8 +268,8 @@ internal class G_ClientCheat : IGameCheat
         ((uint)G_ClientStructOffsets.StructSize * (uint)_clientNumber) +
         (uint)_cheatAddress;
 
-    private IXboxConsole _xboxConsole;
-    private G_ClientStructOffsets _cheatAddress;
+    private readonly IXboxConsole _xboxConsole;
+    private readonly G_ClientStructOffsets _cheatAddress;
 
     private bool _enabled = false;
 
@@ -409,7 +406,6 @@ internal class G_ClientCheat : IGameCheat
 
 internal class G_ClientInfiniteAmmo : IGameCheat
 {
-    private CancellationTokenSource? _updaterCancellationTokenSource = new CancellationTokenSource();
     private bool _enabled = false;
 
     private static readonly byte[] _infiniteAmmoOn = [0x0F, 0x00, 0x00, 0x00];
@@ -440,20 +436,183 @@ internal class G_ClientInfiniteAmmo : IGameCheat
         _infAmmo6 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo6, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
     }
 
-    public async Task UpdateInfAmmo(CancellationToken cancellationToken)
+    public void Enable()
     {
         try
         {
-            Mw2GameFunctions.iPrintLn(_xboxConsole, $"Infinite Ammo^7: ^2Enabled", _clientIndex);
+            _infAmmo1.Enable();
+            _infAmmo2.Enable();
+            _infAmmo3.Enable();
+            _infAmmo4.Enable();
+            _infAmmo5.Enable();
+            _infAmmo6.Enable();
+        }
+
+        catch
+        {
+            return;
+        }
+
+        _enabled = true;
+    }
+
+    public void Disable()
+    {
+        try
+        {
+            _infAmmo1.Disable();
+            _infAmmo2.Disable();
+            _infAmmo3.Disable();
+            _infAmmo4.Disable();
+            _infAmmo5.Disable();
+            _infAmmo6.Disable();
+        }
+
+        catch
+        {
+            return;
+        }
+
+        _enabled = false;
+    }
+
+    public byte[] GetBytes()
+    {
+        return Array.Empty<byte>();
+    }
+
+    public bool GetValue()
+    {
+        return _enabled;
+    }
+
+    public void Toggle()
+    {
+        _enabled = !_enabled;
+
+        if (_enabled)
+            Enable();
+        else
+            Disable();
+    }
+}
+
+internal class G_ClientLoopingCheat : IGameCheat
+{
+    private uint CorrectedCheatAddress =>
+        (uint)G_ClientStructOffsets.Array_BaseAddress +
+        ((uint)G_ClientStructOffsets.StructSize * (uint)_clientIndex) +
+        (uint)_cheatOffset;
+
+    private CancellationTokenSource? _updaterCancellationTokenSource = new CancellationTokenSource();
+
+    private readonly IXboxConsole _xboxConsole;
+    private readonly G_ClientStructOffsets _cheatOffset;
+
+    private bool _enabled = false;
+
+    private readonly string? _cheatName;
+    private readonly int _clientIndex = 0;
+    private readonly uint _byteCount = 1;
+
+    private readonly bool _usingBytes = true;
+    private readonly byte[]? _onBytes;
+    private readonly byte[]? _offBytes;
+
+    private readonly IEnumerable<IGameCheat>? _gameCheats;
+
+    public G_ClientLoopingCheat(
+        IXboxConsole xboxConsole, 
+        G_ClientStructOffsets cheatOffset, 
+        int clientIndex, 
+        byte onByte = 0x01, 
+        byte offByte = 0x00,
+        string? cheatName = null)
+    {
+        _xboxConsole = xboxConsole;
+        _cheatOffset = cheatOffset;
+        _clientIndex = clientIndex;
+
+        _onBytes = [onByte];
+        _offBytes = [offByte];
+
+        _cheatName = cheatName;
+    }
+
+    public G_ClientLoopingCheat(
+        IXboxConsole xboxConsole,
+        G_ClientStructOffsets cheatOffset,
+        int clientIndex, 
+        byte[] onBytes, 
+        byte[] offBytes,
+        string? cheatName = null)
+    {
+        _xboxConsole = xboxConsole;
+        _cheatOffset = cheatOffset;
+        _clientIndex = clientIndex;
+
+        _onBytes = onBytes;
+        _offBytes = offBytes;
+
+        _cheatName = cheatName;
+    }
+
+    public G_ClientLoopingCheat(
+        IXboxConsole xboxConsole,
+        int clientIndex,
+        IEnumerable<IGameCheat> gameCheats,
+        string? cheatName = null)
+    {
+        _xboxConsole = xboxConsole;
+        _clientIndex = clientIndex;
+
+        _onBytes = null;
+        _offBytes = null;
+
+        _usingBytes = false;
+        _gameCheats = gameCheats;
+
+        _cheatName = cheatName;
+    }
+
+    public G_ClientLoopingCheat(
+        IXboxConsole xboxConsole,
+        int clientIndex,
+        IGameCheat gameCheats,
+        string? cheatName = null)
+    {
+        _xboxConsole = xboxConsole;
+        _clientIndex = clientIndex;
+
+        _onBytes = null;
+        _offBytes = null;
+
+        _usingBytes = false;
+        _gameCheats = [gameCheats];
+
+        _cheatName = cheatName;
+    }
+
+    public async Task SetLoop(CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (_cheatName is not null)
+                Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^2Enabled", _clientIndex);
 
             do
             {
-                _infAmmo1.Enable();
-                _infAmmo2.Enable();
-                _infAmmo3.Enable();
-                _infAmmo4.Enable();
-                _infAmmo5.Enable();
-                _infAmmo6.Enable();
+                if (_usingBytes)
+                    _xboxConsole
+                        .WriteBytes
+                        (
+                            CorrectedCheatAddress,
+                            _onBytes
+                        );
+
+                else if (_gameCheats is not null)
+                    foreach (var cheat in _gameCheats)
+                        cheat.Enable();
 
                 await Task
                     .Delay(TimeSpan.FromSeconds(3), cancellationToken);
@@ -463,14 +622,10 @@ internal class G_ClientInfiniteAmmo : IGameCheat
 
         finally
         {
-            _infAmmo1.Disable();
-            _infAmmo2.Disable();
-            _infAmmo3.Disable();
-            _infAmmo4.Disable();
-            _infAmmo5.Disable();
-            _infAmmo6.Disable();
+            _enabled = false;
 
-            Mw2GameFunctions.iPrintLn(_xboxConsole, $"Infinite Ammo^7: ^1Disabled", _clientIndex);
+            if (_cheatName is not null)
+                Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^1Disabled", _clientIndex);
         }
     }
 
@@ -478,11 +633,11 @@ internal class G_ClientInfiniteAmmo : IGameCheat
     {
         try
         {
-
             if (_updaterCancellationTokenSource is null)
                 _updaterCancellationTokenSource = new CancellationTokenSource();
 
-            _ = UpdateInfAmmo(_updaterCancellationTokenSource.Token);
+            _ = SetLoop(_updaterCancellationTokenSource.Token)
+                .ConfigureAwait(false);
         }
 
         catch
@@ -502,7 +657,10 @@ internal class G_ClientInfiniteAmmo : IGameCheat
 
     public byte[] GetBytes()
     {
-        return Array.Empty<byte>();
+        if (_usingBytes)
+            return _enabled ? _onBytes! : _offBytes!;
+        else
+            return Array.Empty<byte>();
     }
 
     public bool GetValue()

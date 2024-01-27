@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using PS3Lib;
 
-namespace Furious_V2_NEW
+namespace Furious
 {
     class RPC
     {

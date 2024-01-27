@@ -1,4 +1,4 @@
-﻿namespace Furious_V2_NEW
+﻿namespace Furious
 {
     partial class CcapiDialog
     {

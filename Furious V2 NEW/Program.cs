@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Furious_V2_NEW
+namespace Furious
 {
     static class Program
     {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PS3Lib;
 
-namespace Furious_V2_NEW
+namespace Furious
 {
     public partial class CcapiDialog : Form
     {

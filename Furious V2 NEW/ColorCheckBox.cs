@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-namespace Furious_V2_NEW
+namespace Furious
 {
     public class ColorCheckBox : CheckBox
     {
