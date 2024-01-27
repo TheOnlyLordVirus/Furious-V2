@@ -7,9 +7,10 @@
     <ProjectGuid>{3B7F04E9-7593-4D05-8AD3-3A9F955AB73E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Furious_V2_NEW</RootNamespace>
-    <AssemblyName>Furious V2 NEW</AssemblyName>
+    <RootNamespace>Furious</RootNamespace>
+    <AssemblyName>Furious</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <LangVersion>Latest</LangVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -41,7 +42,20 @@
       <HintPath>..\..\..\..\..\Desktop\Projects\dlls\PS3Lib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,6 +65,11 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="XDevkit, Version=2.0.7645.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>XboxLib\XDevkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CcapiDialog.cs">
@@ -83,6 +102,29 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RPC.cs" />
+    <Compile Include="XboxLib\G_Client.cs" />
+    <Compile Include="XboxLib\XDRPC\MarshalingUtils.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCArgumentInfo.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCExecutionOptions.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCExecutionState.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCFunctionNotFoundException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCInvalidArgumentTypeException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCInvalidOperationException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCInvalidResponseException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCInvalidReturnTypeException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCInvalidTypeException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCInvocationFailedException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCMarshaler.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCModuleNotFoundException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCNotSupportedException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCNullArgumentInfo.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCPlusPlus\XDRPCPlusPlus.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCReference.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCReferenceMonitor.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCTimeoutException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCTooManyArgumentsException.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCUnionAttribute.cs" />
     <EmbeddedResource Include="CcapiDialog.resx">
       <DependentUpon>CcapiDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -99,6 +141,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -117,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="XboxLib\XDevkit.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
