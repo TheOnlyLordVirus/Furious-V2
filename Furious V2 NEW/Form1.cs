@@ -15,7 +15,6 @@ using System.Threading;
 using XDevkit;
 using LordVirusXboxLib;
 
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 using GroupBox = System.Windows.Forms.GroupBox;
 
 #nullable enable
@@ -39,7 +38,6 @@ public partial class Form1 : Form
         {
             if (CurrentGameClients[clientIndex] is null)
                 CurrentGameClients[clientIndex] = new G_Client(Xbox!, clientIndex);
-
         }
     }
 

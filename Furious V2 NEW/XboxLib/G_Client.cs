@@ -123,6 +123,9 @@ internal sealed class G_Client
     private static readonly byte[] _godModeOn = [0x00, 0xFF, 0xFF, 0xFF];
     private static readonly byte[] _godModeOff = [0x00, 0x00, 0x00, 0x64];
 
+    private static readonly byte[] _infiniteAmmoOn = [0x0F, 0x00, 0x00, 0x00];
+    private static readonly byte[] _infiniteAmmoOff = [0x00, 0x00, 0x00, 0x64];
+
     private static readonly byte[] _allPerksOn = [0xFF, 0xFF];
     private static readonly byte[] _allPerksOff = [0x00, 0x00];
 
@@ -196,7 +199,15 @@ internal sealed class G_Client
 
         _allPerks = new G_ClientLoopingCheat(_xboxConsole, G_ClientStructOffsets.AllPerks, _clientIndex, onBytes: _allPerksOn, offBytes: _allPerksOff, cheatName: "All Perks");
 
-        _infiniteAmmo = new G_ClientLoopingCheat(_xboxConsole, _clientIndex, new G_ClientInfiniteAmmo(_xboxConsole, _clientIndex), cheatName: "Infinite Ammo");
+        var infAmmoIGameCheats = new IGameCheat[4];
+        infAmmoIGameCheats[0] = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo1, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
+        infAmmoIGameCheats[1] = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo2, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
+        infAmmoIGameCheats[2] = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo3, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
+        infAmmoIGameCheats[3] = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo4, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
+        infAmmoIGameCheats[4] = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo5, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
+        infAmmoIGameCheats[5] = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo6, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
+
+        _infiniteAmmo = new G_ClientLoopingCheat(_xboxConsole, _clientIndex, infAmmoIGameCheats, cheatName: "Infinite Ammo");
 
 #if DEBUG
         DebugCheat = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.DebugOffset, _clientIndex);
@@ -266,10 +277,10 @@ internal class G_ClientCheat : IGameCheat
     private uint CorrectedCheatAddress =>
         (uint)G_ClientStructOffsets.Array_BaseAddress +
         ((uint)G_ClientStructOffsets.StructSize * (uint)_clientNumber) +
-        (uint)_cheatAddress;
+        (uint)_cheatOffset;
 
     private readonly IXboxConsole _xboxConsole;
-    private readonly G_ClientStructOffsets _cheatAddress;
+    private readonly G_ClientStructOffsets _cheatOffset;
 
     private bool _enabled = false;
 
@@ -283,7 +294,7 @@ internal class G_ClientCheat : IGameCheat
     public G_ClientCheat
     (
         IXboxConsole xboxConsole,
-        G_ClientStructOffsets cheatAddress,
+        G_ClientStructOffsets cheatOffset,
         int clientNumber,
         byte onByte = 0x01,
         byte offByte = 0x00,
@@ -291,7 +302,7 @@ internal class G_ClientCheat : IGameCheat
     )
     {
         _xboxConsole = xboxConsole;
-        _cheatAddress = cheatAddress;
+        _cheatOffset = cheatOffset;
         _clientNumber = clientNumber;
         _cheatName = cheatName;
 
@@ -302,7 +313,7 @@ internal class G_ClientCheat : IGameCheat
     public G_ClientCheat
     (
         IXboxConsole xboxConsole,
-        G_ClientStructOffsets cheatAddress,
+        G_ClientStructOffsets cheatOffset,
         int clientNumber,
         byte[] onBytes,
         byte[] offBytes,
@@ -315,7 +326,7 @@ internal class G_ClientCheat : IGameCheat
         _byteCount = (uint)onBytes.Length;
 
         _xboxConsole = xboxConsole;
-        _cheatAddress = cheatAddress;
+        _cheatOffset = cheatOffset;
         _clientNumber = clientNumber;
         _cheatName = cheatName;
 
@@ -396,99 +407,6 @@ internal class G_ClientCheat : IGameCheat
     public void Toggle()
     {
         _enabled = !(GetValue());
-
-        if (_enabled)
-            Enable();
-        else
-            Disable();
-    }
-}
-
-internal class G_ClientInfiniteAmmo : IGameCheat
-{
-    private bool _enabled = false;
-
-    private static readonly byte[] _infiniteAmmoOn = [0x0F, 0x00, 0x00, 0x00];
-    private static readonly byte[] _infiniteAmmoOff = [0x00, 0x00, 0x00, 0x64];
-
-    private readonly int _clientIndex = 0;
-
-    private readonly IXboxConsole _xboxConsole;
-    private readonly IGameCheat _infAmmo1;
-    private readonly IGameCheat _infAmmo2;
-    private readonly IGameCheat _infAmmo3;
-    private readonly IGameCheat _infAmmo4;
-    private readonly IGameCheat _infAmmo5;
-    private readonly IGameCheat _infAmmo6;
-
-    public G_ClientInfiniteAmmo(IXboxConsole xboxConsole, int clientIndex)
-    {
-        _xboxConsole = xboxConsole;
-
-        _clientIndex = clientIndex;
-
-        // TODO: Label these for what weapon slot they are giving inf ammo too.
-        _infAmmo1 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo1, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-        _infAmmo2 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo2, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-        _infAmmo3 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo3, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-        _infAmmo4 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo4, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-        _infAmmo5 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo5, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-        _infAmmo6 = new G_ClientCheat(_xboxConsole, G_ClientStructOffsets.InfAmmo6, _clientIndex, onBytes: _infiniteAmmoOn, offBytes: _infiniteAmmoOff);
-    }
-
-    public void Enable()
-    {
-        try
-        {
-            _infAmmo1.Enable();
-            _infAmmo2.Enable();
-            _infAmmo3.Enable();
-            _infAmmo4.Enable();
-            _infAmmo5.Enable();
-            _infAmmo6.Enable();
-        }
-
-        catch
-        {
-            return;
-        }
-
-        _enabled = true;
-    }
-
-    public void Disable()
-    {
-        try
-        {
-            _infAmmo1.Disable();
-            _infAmmo2.Disable();
-            _infAmmo3.Disable();
-            _infAmmo4.Disable();
-            _infAmmo5.Disable();
-            _infAmmo6.Disable();
-        }
-
-        catch
-        {
-            return;
-        }
-
-        _enabled = false;
-    }
-
-    public byte[] GetBytes()
-    {
-        return Array.Empty<byte>();
-    }
-
-    public bool GetValue()
-    {
-        return _enabled;
-    }
-
-    public void Toggle()
-    {
-        _enabled = !_enabled;
 
         if (_enabled)
             Enable();
