@@ -139,8 +139,8 @@ internal sealed class G_Client
                     _maxNameCharCount
                 );
 
-            bytes = bytes[..bytes.IndexOf((byte)0x00)];
-            _clientName = Encoding.UTF8.GetString(bytes);
+            bytes = bytes.Slice(0, bytes.IndexOf((byte)0x00));
+            _clientName = Encoding.UTF8.GetString(bytes.ToArray());
 
             return _clientName;
         }
@@ -148,10 +148,10 @@ internal sealed class G_Client
         set
         {
             if (value.Length > _maxNameCharCount)
-                value = value[.._maxNameCharCount];
+                value = value.AsSpan().Slice(0, _maxNameCharCount).ToString();
 
             Span<byte> nameBytes = stackalloc byte[_maxNameCharCount];
-            Encoding.ASCII.GetBytes(value, nameBytes);
+            nameBytes = Encoding.ASCII.GetBytes(value);
 
             _xboxConsole
                 .DebugTarget
