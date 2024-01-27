@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 using XDevkit;
@@ -49,7 +50,12 @@ internal sealed class G_Client
                 );
 
             bytes = bytes.Slice(0, bytes.IndexOf((byte)0x00));
-            _clientName = Encoding.UTF8.GetString(bytes.ToArray());
+
+            unsafe
+            {
+                fixed (byte* bytePtr = bytes)
+                    _clientName = Encoding.UTF8.GetString(bytePtr, bytes.Length);
+            }
 
             return _clientName;
         }
@@ -57,7 +63,9 @@ internal sealed class G_Client
         set
         {
             if (value.Length > _maxNameCharCount)
-                value = value.AsSpan().Slice(0, _maxNameCharCount).ToString();
+                value = value.AsSpan()
+                             .Slice(0, _maxNameCharCount)
+                             .ToString();
 
             Span<byte> nameBytes = stackalloc byte[_maxNameCharCount];
             nameBytes = Encoding.ASCII.GetBytes(value);
@@ -195,30 +203,32 @@ internal sealed class G_Client
     {
         try
         {
-            G_ClientStructOffsets[] infAmmoOffsets =
-                [
-                    G_ClientStructOffsets.InfAmmo1,
-                    G_ClientStructOffsets.InfAmmo2,
-                    G_ClientStructOffsets.InfAmmo3,
-                    G_ClientStructOffsets.InfAmmo4,
-                    G_ClientStructOffsets.InfAmmo5,
-                    G_ClientStructOffsets.InfAmmo6
-                ];
+            const byte offsetCount = 6;
 
-            var infAmmoIGameCheats = new IGameCheat[4];
+            var infAmmoOffsets = new G_ClientStructOffsets[offsetCount];
+
+            byte index = 0;
+            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo1; index++;
+            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo2; index++;
+            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo3; index++;
+            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo4; index++;
+            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo5; index++;
+            infAmmoOffsets[index] = G_ClientStructOffsets.InfAmmo6; index++;
+
+            var infAmmoGameCheats = new IGameCheat[offsetCount];
 
             // Set looping max ammo capacity for all 6 Weapon slots.
-            foreach (var offset in infAmmoOffsets)
-                infAmmoIGameCheats[0] = new G_ClientCheat
+            for (byte i = 0; i < offsetCount; ++i)
+                infAmmoGameCheats[i] = new G_ClientCheat
                     (
                         _xboxConsole,
-                        offset,
+                        infAmmoOffsets[i],
                         _clientIndex,
                         onBytes: _infiniteAmmoOn,
                         offBytes: _infiniteAmmoOff
                     );
 
-            return infAmmoIGameCheats;
+            return infAmmoGameCheats;
         }
 
         catch
@@ -268,6 +278,6 @@ internal sealed class G_Client
     private readonly IGameCheat _allPerks;
     public IGameCheat AllPerks => _allPerks;
 
-    private IGameCheat _infiniteAmmo;
+    private readonly IGameCheat _infiniteAmmo;
     public IGameCheat InfiniteAmmo => _infiniteAmmo;
 }
