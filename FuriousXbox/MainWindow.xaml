@@ -1,0 +1,18 @@
+﻿<Window x:Class="FuriousXbox.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FuriousXbox"
+        mc:Ignorable="d"
+        Title="Furious Xbox Alpha v0.0" Height="450" Width="800">
+
+
+    <Grid Background="#FFBA2B2B">
+        <Label x:Name="ToolLogo" Content="FURIOUS XBOX" HorizontalAlignment="Left" Margin="137,17,0,0" VerticalAlignment="Top" FontSize="72"/>
+
+        <Button x:Name="ConnectButton" Content="Connect" HorizontalAlignment="Left" Margin="327,128,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" Click="ConnectButton_Click"/>
+        <Button x:Name="DebugCheatButton" Content="Debug Option" HorizontalAlignment="Left" Margin="327,194,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" Click="DebugCheatButton_Click" IsEnabled="False"/>
+
+    </Grid>
+</Window>

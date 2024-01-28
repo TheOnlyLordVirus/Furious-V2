@@ -104,6 +104,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RPC.cs" />
+    <Compile Include="Theme\FuriousButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Theme\FuriousForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="XboxLib\MW2\G_Client.cs" />
     <Compile Include="XboxLib\MW2\G_ClientCheat.cs" />
     <Compile Include="XboxLib\MW2\G_ClientLoopingCheat.cs" />

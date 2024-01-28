@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <LangVersion>Latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="XboxLib\XDevkit.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="XboxLib\XDevkit.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="XDevkit">
+      <HintPath>XboxLib\XDevkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
