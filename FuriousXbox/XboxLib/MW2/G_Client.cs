@@ -1,15 +1,10 @@
 ﻿//#define TestSetMemory_cpp
-
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 using XDevkit;
 using XDRPCPlusPlus;
 
 namespace LordVirusMw2XboxLib;
-
-#nullable enable
 
 internal sealed class G_Client
 {
@@ -32,10 +27,7 @@ internal sealed class G_Client
     private static readonly byte[] _allPerksOff = [0x00, 0x00];
 
     private readonly IXboxConsole _xboxConsole;
-    public IXboxConsole XboxConsole
-    {
-        get => _xboxConsole;
-    }
+    public IXboxConsole XboxConsole => _xboxConsole;
 
     private readonly uint _correctedNameAddress;
     private string _clientName = string.Empty;

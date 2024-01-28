@@ -11,8 +11,14 @@
     <Grid Background="#FFBA2B2B">
         <Label x:Name="ToolLogo" Content="FURIOUS XBOX" HorizontalAlignment="Left" Margin="137,17,0,0" VerticalAlignment="Top" FontSize="72"/>
 
-        <Button x:Name="ConnectButton" Content="Connect" HorizontalAlignment="Left" Margin="327,128,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" Click="ConnectButton_Click"/>
-        <Button x:Name="DebugCheatButton" Content="Debug Option" HorizontalAlignment="Left" Margin="327,194,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" Click="DebugCheatButton_Click" IsEnabled="False"/>
-
+        <Button x:Name="ConnectButton" Content="Connect" HorizontalAlignment="Left" Margin="327,128,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White"/>
+        <Button x:Name="GodModeCheatButton" Content="Godmode" HorizontalAlignment="Left" Margin="30,263,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="GodModeCheatButton_Click"/>
+        <Button x:Name="NoClipCheatButton" Content="No Clip" HorizontalAlignment="Left" Margin="30,313,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="NoClipCheatButton_Click"/>
+        <Button x:Name="UfoModeCheatButton" Content="Ufo Mode" HorizontalAlignment="Left" Margin="161,313,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="UfoModeCheatButton_Click"/>
+        <Button x:Name="InfAmmoCheatButton" Content="Infine Ammo" HorizontalAlignment="Left" Margin="161,363,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="InfAmmoCheatButton_Click"/>
+        <Button x:Name="NoRecoilCheatButton" Content="No Recoil" HorizontalAlignment="Left" Margin="30,363,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="NoRecoilCheatButton_Click"/>
+        <ComboBox x:Name="ClientComboBox" IsEnabled="False" HorizontalAlignment="Left" Margin="327,230,0,0" VerticalAlignment="Top" Width="117" DropDownOpened="ClientComboBox_DropDownOpened"/>
+        <TextBox x:Name="GClientNameTextBox" HorizontalAlignment="Left" Margin="478,230,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Height="22"/>
+        <Button x:Name="ChangeGClientNameButton" Content="Change Name" HorizontalAlignment="Left" Margin="478,263,0,0" VerticalAlignment="Top" Height="31" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="ChangeGClientNameButton_Click"/>
     </Grid>
 </Window>
