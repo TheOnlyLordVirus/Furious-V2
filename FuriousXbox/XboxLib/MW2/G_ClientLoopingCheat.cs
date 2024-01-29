@@ -126,13 +126,26 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
                         cheat.Enable();
 
                 await Task
-                    .Delay(TimeSpan.FromSeconds(3), cancellationToken);
+                    .Delay(TimeSpan.FromSeconds(3), cancellationToken)
+                    .ConfigureAwait(false);
             }
             while (!cancellationToken.IsCancellationRequested);
         }
 
         finally
         {
+            if (_usingBytes)
+                _xboxConsole
+                    .WriteBytes
+                    (
+                        CorrectedCheatAddress,
+                        _offBytes!
+                    );
+
+            else if (_gameCheats is not null)
+                foreach (var cheat in _gameCheats)
+                    cheat.Disable();
+
             enabled = false;
 
             if (_cheatName is not null)

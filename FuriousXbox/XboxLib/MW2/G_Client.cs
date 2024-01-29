@@ -29,6 +29,9 @@ internal sealed class G_Client
 
     private readonly IXboxConsole _xboxConsole;
     public IXboxConsole XboxConsole => _xboxConsole;
+    
+    private readonly int _clientIndex;
+    public int ClientIndex => _clientIndex;
 
     private readonly uint _correctedNameAddress;
     private string clientName = string.Empty;
@@ -69,9 +72,6 @@ internal sealed class G_Client
         }
     }
 
-    private readonly int _clientIndex;
-    public int ClientIndex => _clientIndex;
-
     public G_Client(IXboxConsole xbox, int clientIndex = 0)
     {
         _xboxConsole = xbox;
@@ -82,26 +82,6 @@ internal sealed class G_Client
                     (G_ClientStructOffset.StructSize * _clientIndex) +
                         G_ClientStructOffset.Name);
 
-        _redboxes = new G_ClientCheat
-            (
-                _xboxConsole,
-                G_ClientStructOffset.Redboxes,
-                _clientIndex, 
-                onByte: _redBoxesOn, 
-                cheatName: "Red Boxes"
-            );
-
-
-        _thermalRedboxes = new G_ClientCheat
-            (
-                _xboxConsole, 
-                G_ClientStructOffset.Redboxes, 
-                _clientIndex, 
-                onByte: _thermalRedBoxesOn, 
-                cheatName: "Thermal Red Boxes"
-            );
-
-
         _godmode = new G_ClientCheat
             (
                 _xboxConsole,
@@ -110,15 +90,6 @@ internal sealed class G_Client
                 onBytes: _godModeOn,
                 offBytes: _godModeOff, 
                 cheatName: "God Mode"
-            );
-
-        _noRecoil = new G_ClientCheat
-            (
-                _xboxConsole, 
-                G_ClientStructOffset.NoRecoil, 
-                _clientIndex, 
-                onByte: _noRecoilOn, 
-                cheatName: "No Recoil"
             );
 
         _noClip = new G_ClientCheat
@@ -155,6 +126,34 @@ internal sealed class G_Client
                 cheatName: "Secondary Akimbo"
             );
 
+        _redboxes = new G_ClientLoopingCheat
+            (
+                _xboxConsole,
+                G_ClientStructOffset.Redboxes,
+                _clientIndex,
+                onByte: _redBoxesOn,
+                cheatName: "Red Boxes"
+            );
+
+
+        _thermalRedboxes = new G_ClientLoopingCheat
+            (
+                _xboxConsole,
+                G_ClientStructOffset.Redboxes,
+                _clientIndex,
+                onByte: _thermalRedBoxesOn,
+                cheatName: "Thermal Red Boxes"
+            );
+
+        _noRecoil = new G_ClientLoopingCheat
+            (
+                _xboxConsole,
+                G_ClientStructOffset.NoRecoil,
+                _clientIndex,
+                onByte: _noRecoilOn,
+                cheatName: "No Recoil"
+            );
+
         _allPerks = new G_ClientLoopingCheat
             (
                 _xboxConsole, 
@@ -186,42 +185,34 @@ internal sealed class G_Client
 #endif
     }
 
-    private IEnumerable<IGameCheat> Internal_BuildInfAmmoCheats()
+    private IGameCheat[] Internal_BuildInfAmmoCheats()
     {
-        try
-        {
-            const byte offsetCount = 6;
+        const byte offsetCount = 6;
 
-            var infAmmoOffsets = new G_ClientStructOffset[offsetCount];
+        var infAmmoOffsets = new G_ClientStructOffset[offsetCount];
 
-            byte index = 0;
-            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo1; index++;
-            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo2; index++;
-            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo3; index++;
-            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo4; index++;
-            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo5; index++;
-            infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo6; index++;
+        byte index = 0;
+        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo1; index++;
+        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo2; index++;
+        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo3; index++;
+        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo4; index++;
+        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo5; index++;
+        infAmmoOffsets[index] = G_ClientStructOffset.InfAmmo6; index++;
 
-            var infAmmoGameCheats = new IGameCheat[offsetCount];
+        var infAmmoGameCheats = new IGameCheat[offsetCount];
 
-            // Set looping max ammo capacity for all 6 Weapon slots.
-            for (byte i = 0; i < offsetCount; ++i)
-                infAmmoGameCheats[i] = new G_ClientCheat
-                    (
-                        _xboxConsole,
-                        infAmmoOffsets[i],
-                        _clientIndex,
-                        onBytes: _infiniteAmmoOn,
-                        offBytes: _infiniteAmmoOff
-                    );
+        // Set looping max ammo capacity for all 6 Weapon slots.
+        for (byte i = 0; i < offsetCount; ++i)
+            infAmmoGameCheats[i] = new G_ClientCheat
+                (
+                    _xboxConsole,
+                    infAmmoOffsets[i],
+                    _clientIndex,
+                    onBytes: _infiniteAmmoOn,
+                    offBytes: _infiniteAmmoOff
+                );
 
-            return infAmmoGameCheats;
-        }
-
-        catch
-        {
-            return Array.Empty<IGameCheat>();
-        }
+        return infAmmoGameCheats;
     }
 
     // TODO: Get the in game check for the current client without RPC calling GetDvarBool.

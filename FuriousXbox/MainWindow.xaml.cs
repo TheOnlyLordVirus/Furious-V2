@@ -86,6 +86,7 @@ namespace FuriousXbox
             NoRecoilCheatButton.IsEnabled = true;
             ChangeGClientNameButton.IsEnabled = true;
             GClientNameTextBox.IsEnabled = true;
+            ThermalRedBoxesCheatButton.IsEnabled = true;
         }
         
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
@@ -117,6 +118,11 @@ namespace FuriousXbox
         private void InfAmmoCheatButton_Click(object sender, RoutedEventArgs e)
         {
             SelectedClient?.InfiniteAmmo.Toggle();
+        }
+
+        private void ThermalRedBoxesCheatButton_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedClient?.ThermalRedboxes.Toggle();
         }
 
         private void ChangeGClientNameButton_Click(object sender, RoutedEventArgs e)
