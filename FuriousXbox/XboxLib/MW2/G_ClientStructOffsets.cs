@@ -1,6 +1,6 @@
-﻿using System;
+﻿namespace LordVirusMw2XboxLib;
 
-namespace LordVirusMw2XboxLib;
+#nullable enable
 
 public struct G_ClientStructOffset
 {
@@ -28,7 +28,7 @@ public struct G_ClientStructOffset
     public const UInt32 DebugOffset = 0x0000;
 #endif
 
-    public override bool Equals(object inputObject)
+    public override readonly bool Equals(object? inputObject)
     {
         if (inputObject is not G_ClientStructOffset comparisonObject)
             return false;
@@ -36,7 +36,7 @@ public struct G_ClientStructOffset
         return comparisonObject.InternalValue == InternalValue;
     }
 
-    public override int GetHashCode() => InternalValue.GetHashCode();
+    public override readonly int GetHashCode() => InternalValue.GetHashCode();
 
     public static G_ClientStructOffset operator - 
         (G_ClientStructOffset left, G_ClientStructOffset right) 
@@ -55,16 +55,20 @@ public struct G_ClientStructOffset
         => left.InternalValue / right.InternalValue;
 
     public static G_ClientStructOffset operator ~
-    (G_ClientStructOffset client)
-        => ~client.InternalValue;
+        (G_ClientStructOffset client)
+            => ~client.InternalValue;
 
     public static G_ClientStructOffset operator |
         (G_ClientStructOffset left, G_ClientStructOffset right)
         => left.InternalValue | right.InternalValue;
 
     public static G_ClientStructOffset operator &
-    (G_ClientStructOffset left, G_ClientStructOffset right)
-        => left.InternalValue & right.InternalValue;
+        (G_ClientStructOffset left, G_ClientStructOffset right)
+            => left.InternalValue & right.InternalValue;
+
+    public static G_ClientStructOffset operator ^
+        (G_ClientStructOffset left, G_ClientStructOffset right)
+            => left.InternalValue ^ right.InternalValue;
 
     public static bool operator ==
         (G_ClientStructOffset left, G_ClientStructOffset right)
@@ -77,7 +81,7 @@ public struct G_ClientStructOffset
     public static implicit operator G_ClientStructOffset(Int32 otherType)
         => new G_ClientStructOffset
         {
-            InternalValue = (uint)otherType
+            InternalValue = (UInt32)otherType
         };
 
     public static implicit operator G_ClientStructOffset(UInt32 otherType)

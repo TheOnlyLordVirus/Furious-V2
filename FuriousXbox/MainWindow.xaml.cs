@@ -1,9 +1,10 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 using XDevkit;
 
 using LordVirusMw2XboxLib;
-using System.Windows.Controls;
+
 using FuriousXbox.XboxLib.MW2;
 
 namespace FuriousXbox
@@ -61,10 +62,12 @@ namespace FuriousXbox
         private void ClientComboBox_DropDownOpened(object sender, System.EventArgs e)
         {
             Internal_RefreshClients();
-
-            GClientNameTextBox.Text = SelectedClient?.ClientName;
         }
 
+        private void ClientComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            GClientNameTextBox.Text = SelectedClient?.ClientName;
+        }
         #endregion
 
         public MainWindow()
@@ -83,6 +86,12 @@ namespace FuriousXbox
             NoRecoilCheatButton.IsEnabled = true;
             ChangeGClientNameButton.IsEnabled = true;
             GClientNameTextBox.IsEnabled = true;
+        }
+        
+        private void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Mw2GameFunctions.TryConnectToMw2(xboxManager, out xboxConsole))
+                Internal_EnableWindowElements();
         }
 
         private void GodModeCheatButton_Click(object sender, RoutedEventArgs e)
@@ -122,6 +131,7 @@ namespace FuriousXbox
         {
             if (xboxConsole is null)
                 return;
+
             if (checkBox1.IsChecked ?? false)
                 xexManager.call(xboxConsole, 0, 1);
             else
@@ -129,14 +139,6 @@ namespace FuriousXbox
 
             if (xexManager.callBack(xboxConsole, 0))
                  MessageBox.Show("xex Callback");
-        }
-
-
-        private void ConnectButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Mw2GameFunctions.TryConnectToMw2(xboxManager, out xboxConsole) &&
-                    xboxConsole is not null)
-                Internal_EnableWindowElements();
         }
     }
 }

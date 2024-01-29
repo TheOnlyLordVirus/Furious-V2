@@ -1,9 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-
-using XDevkit;
+﻿using XDevkit;
 using XDRPCPlusPlus;
 
 using LordVirusMw2XboxLib;
@@ -120,7 +115,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
                         .WriteBytes
                         (
                             CorrectedCheatAddress,
-                            _onBytes
+                            _onBytes!
                         );
 
                 else if (_gameCheats is not null)
@@ -166,14 +161,6 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
         _updaterCancellationTokenSource?.Cancel();
         _updaterCancellationTokenSource = null;
         _enabled = false;
-    }
-
-    public byte[] GetBytes()
-    {
-        if (_usingBytes)
-            return _enabled ? _onBytes! : _offBytes!;
-        else
-            return Array.Empty<byte>();
     }
 
     public bool GetValue()

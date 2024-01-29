@@ -1,16 +1,17 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 
 using XDevkit;
 using XDRPC;
 
 namespace LordVirusMw2XboxLib;
 
+#nullable enable
+
 using Constants = Mw2XboxLibConstants;
 
 internal static class Mw2GameFunctions
 {
-    internal static bool TryConnectToMw2(IXboxManager? xboxManager, out IXboxConsole? connectedXbox)
+    public static bool TryConnectToMw2(IXboxManager? xboxManager, out IXboxConsole? connectedXbox)
     {
         bool result = false;
 
@@ -51,9 +52,9 @@ internal static class Mw2GameFunctions
         return result;
     }
 
-    private static bool LocalClientInGame(IXboxConsole xboxConsole) => Cg_DvarGetBool(xboxConsole!, "cl_ingame");
+    public static bool LocalClientInGame(IXboxConsole xboxConsole) => Cg_DvarGetBool(xboxConsole!, "cl_ingame");
 
-    internal static async Task UnlockAll(IXboxConsole xbox, int client = -1)
+    public static async Task UnlockAll(IXboxConsole xbox, int client = -1)
     {
         if (!LocalClientInGame(xbox))
         {
@@ -110,30 +111,30 @@ internal static class Mw2GameFunctions
         iPrintLnBold(xbox!, "^2Completed Challenges!", client);
     }
 
-    internal static bool Cg_DvarGetBool(IXboxConsole xboxConsole, string commandString)
+    public static bool Cg_DvarGetBool(IXboxConsole xboxConsole, string commandString)
         => xboxConsole.ExecuteRPC<bool>
         (
             new XDRPCExecutionOptions(XDRPCMode.Title, Constants.Dvar_GetBool),
             new object[] { commandString }
         );
 
-    internal static void Cbuf_AddText(IXboxConsole xboxConsole, string commandString)
+    public static void Cbuf_AddText(IXboxConsole xboxConsole, string commandString)
         => xboxConsole.ExecuteRPC<int>
         (
             new XDRPCExecutionOptions(XDRPCMode.Title, Constants.Cbuf_AddText),
             new object[] { 0, commandString }
         );
 
-    internal static void Cg_GameSendServerCommand(IXboxConsole xboxConsole, params object[] parameters)
+    public static void Cg_GameSendServerCommand(IXboxConsole xboxConsole, params object[] parameters)
         => xboxConsole.ExecuteRPC<int>
         (
             new XDRPCExecutionOptions(XDRPCMode.Title, Constants.Sv_GameSendServerCommand),
             parameters
         );
 
-    internal static void iPrintLn(IXboxConsole xboxConsole, string text, int client = -1)
+    public static void iPrintLn(IXboxConsole xboxConsole, string text, int client = -1)
         => Cg_GameSendServerCommand(xboxConsole, client, 0, $"f \"{text}\"");
 
-    internal static void iPrintLnBold(IXboxConsole xboxConsole, string text, int client = -1)
+    public static void iPrintLnBold(IXboxConsole xboxConsole, string text, int client = -1)
         => Cg_GameSendServerCommand(xboxConsole, client, 0, $"c \"{text}\"");
 }

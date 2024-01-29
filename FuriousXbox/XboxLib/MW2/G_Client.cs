@@ -5,6 +5,8 @@ using XDRPCPlusPlus;
 
 namespace LordVirusMw2XboxLib;
 
+#nullable enable
+
 internal sealed class G_Client
 {
     private const int _maxNameCharCount = 32;

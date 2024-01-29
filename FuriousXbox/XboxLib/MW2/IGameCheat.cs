@@ -3,7 +3,6 @@
 internal interface IGameCheat
 {
     bool GetValue();
-    byte[] GetBytes();
 
     void Enable();
     void Disable();
