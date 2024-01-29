@@ -3,6 +3,8 @@
 using XDevkit;
 
 using LordVirusMw2XboxLib;
+using System.Windows.Controls;
+using FuriousXbox.XboxLib.MW2;
 
 namespace FuriousXbox
 {
@@ -70,13 +72,6 @@ namespace FuriousXbox
             InitializeComponent();
         }
 
-        private void ConnectButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Mw2GameFunctions.TryConnectToMw2(xboxManager, out xboxConsole) && 
-                    xboxConsole is not null)
-                Internal_EnableWindowElements();
-        }
-
         private void Internal_EnableWindowElements()
         {
             // TODO: Put any button, checkbox, dropdown, ect... that needs to be enabled in here when we succesfully connect.
@@ -121,6 +116,27 @@ namespace FuriousXbox
                 return;
 
             SelectedClient!.ClientName = GClientNameTextBox.Text;
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (xboxConsole is null)
+                return;
+            if (checkBox1.IsChecked ?? false)
+                xexManager.call(xboxConsole, 0, 1);
+            else
+                xexManager.call(xboxConsole, 0, 0);
+
+            if (xexManager.callBack(xboxConsole, 0))
+                 MessageBox.Show("xex Callback");
+        }
+
+
+        private void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Mw2GameFunctions.TryConnectToMw2(xboxManager, out xboxConsole) &&
+                    xboxConsole is not null)
+                Internal_EnableWindowElements();
         }
     }
 }

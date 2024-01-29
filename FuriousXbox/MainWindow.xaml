@@ -20,5 +20,6 @@
         <ComboBox x:Name="ClientComboBox" IsEnabled="False" HorizontalAlignment="Left" Margin="327,230,0,0" VerticalAlignment="Top" Width="117" DropDownOpened="ClientComboBox_DropDownOpened"/>
         <TextBox x:Name="GClientNameTextBox" HorizontalAlignment="Left" Margin="478,230,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Height="22"/>
         <Button x:Name="ChangeGClientNameButton" Content="Change Name" HorizontalAlignment="Left" Margin="478,263,0,0" VerticalAlignment="Top" Height="31" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="ChangeGClientNameButton_Click"/>
+        <CheckBox x:Name="checkBox1" Content="CheckBox" HorizontalAlignment="Left" Margin="147,183,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
     </Grid>
 </Window>
