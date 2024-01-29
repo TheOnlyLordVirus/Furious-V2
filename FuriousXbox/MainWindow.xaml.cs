@@ -17,9 +17,8 @@ namespace FuriousXbox
         private IXboxManager? xboxManager;
         private IXboxConsole? xboxConsole;
 
-        #region Ui Client Selection Logic
-        private const int _maxClientCount = 18;
-        private G_Client?[] CurrentGameClients = new G_Client?[_maxClientCount];
+        private readonly Task?[] unlockAllTasks = new Task?[Mw2XboxLibConstants.MaxClientCount];
+        private readonly G_Client?[] CurrentGameClients = new G_Client?[Mw2XboxLibConstants.MaxClientCount];
 
         private G_Client? SelectedClient
         {
@@ -31,44 +30,6 @@ namespace FuriousXbox
                 return g_ClientComboBox.Client;
             }
         }
-
-        private void Internal_RefreshClients()
-        {
-            if (xboxConsole is null)
-                return;
-
-            for (int clientIndex = 0; clientIndex < _maxClientCount; ++clientIndex)
-            {
-                if (CurrentGameClients[clientIndex] is null)
-                {
-                    CurrentGameClients[clientIndex] = new G_Client(xboxConsole!, clientIndex);
-
-                    ClientComboBox.Items.Add(new G_ClientComboBoxItem()
-                    {
-                        Content = CurrentGameClients[clientIndex]?.ClientName,
-                        Client = CurrentGameClients[clientIndex]
-                    });
-
-                    continue;
-                }
-
-                if (ClientComboBox.Items[clientIndex] is not G_ClientComboBoxItem g_ClientComboBoxItem)
-                    continue;
-
-                g_ClientComboBoxItem.Content = g_ClientComboBoxItem.Client?.ClientName ?? string.Empty;
-            }
-        }
-
-        private void ClientComboBox_DropDownOpened(object sender, System.EventArgs e)
-        {
-            Internal_RefreshClients();
-        }
-
-        private void ClientComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            GClientNameTextBox.Text = SelectedClient?.ClientName;
-        }
-        #endregion
 
         public MainWindow()
         {
@@ -87,6 +48,7 @@ namespace FuriousXbox
             ChangeGClientNameButton.IsEnabled = true;
             GClientNameTextBox.IsEnabled = true;
             ThermalRedBoxesCheatButton.IsEnabled = true;
+            UnlockAllCheatButton.IsEnabled = true;
         }
         
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
@@ -145,6 +107,55 @@ namespace FuriousXbox
 
             if (xexManager.callBack(xboxConsole, 0))
                  MessageBox.Show("xex Callback");
+        }
+
+        private void UnlockAllCheatButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedClient is null)
+                return;
+
+            if (unlockAllTasks[SelectedClient.ClientIndex] is not null &&
+                !(unlockAllTasks[SelectedClient.ClientIndex]!.IsCompleted))
+                return;
+
+            unlockAllTasks[SelectedClient.ClientIndex] = SelectedClient.UnlockAll();
+        }
+
+        private void Internal_RefreshClients()
+        {
+            if (xboxConsole is null)
+                return;
+
+            for (int clientIndex = 0; clientIndex < Mw2XboxLibConstants.MaxClientCount; ++clientIndex)
+            {
+                if (CurrentGameClients[clientIndex] is null)
+                {
+                    CurrentGameClients[clientIndex] = new G_Client(xboxConsole!, clientIndex);
+
+                    ClientComboBox.Items.Add(new G_ClientComboBoxItem()
+                    {
+                        Content = CurrentGameClients[clientIndex]?.ClientName,
+                        Client = CurrentGameClients[clientIndex]
+                    });
+
+                    continue;
+                }
+
+                if (ClientComboBox.Items[clientIndex] is not G_ClientComboBoxItem g_ClientComboBoxItem)
+                    continue;
+
+                g_ClientComboBoxItem.Content = g_ClientComboBoxItem.Client?.ClientName ?? string.Empty;
+            }
+        }
+
+        private void ClientComboBox_DropDownOpened(object sender, System.EventArgs e)
+        {
+            Internal_RefreshClients();
+        }
+
+        private void ClientComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            GClientNameTextBox.Text = SelectedClient?.ClientName;
         }
     }
 }

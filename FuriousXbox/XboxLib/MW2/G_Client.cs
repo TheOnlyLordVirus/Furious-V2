@@ -7,6 +7,8 @@ namespace LordVirusMw2XboxLib;
 
 #nullable enable
 
+using Functions = Mw2GameFunctions;
+
 internal sealed class G_Client
 {
     private const int _maxNameCharCount = 32;
@@ -224,6 +226,9 @@ internal sealed class G_Client
 
     //private IGameCheat? _killstreakBullet;
     //public IGameCheat? KillstreakBullet => _killstreakBullet;
+
+    public async Task UnlockAll(CancellationToken cancellationToken = default) =>
+        await Functions.UnlockAll(_xboxConsole, _clientIndex, cancellationToken);
 
 #if DEBUG
     public IGameCheat? DebugCheat;

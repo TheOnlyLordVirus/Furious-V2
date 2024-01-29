@@ -1,7 +1,10 @@
-﻿using System.Windows;
+﻿using System.Text;
+using System.Windows;
 
 using XDevkit;
+
 using XDRPC;
+using XDRPCPlusPlus;
 
 namespace LordVirusMw2XboxLib;
 
@@ -13,7 +16,7 @@ internal static class Mw2GameFunctions
 {
     public static bool TryConnectToMw2(IXboxManager? xboxManager, out IXboxConsole? connectedXbox)
     {
-        bool result = false;
+        bool result;
 
         try
         {
@@ -54,7 +57,7 @@ internal static class Mw2GameFunctions
 
     public static bool LocalClientInGame(IXboxConsole xboxConsole) => Cg_DvarGetBool(xboxConsole!, "cl_ingame");
 
-    public static async Task UnlockAll(IXboxConsole xbox, int client = -1)
+    public static async Task UnlockAll(IXboxConsole xbox, int client = -1, CancellationToken cancellationToken = default)
     {
         if (!LocalClientInGame(xbox))
         {
@@ -74,7 +77,8 @@ internal static class Mw2GameFunctions
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks5);
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks6);
         iPrintLn(xbox!, "25 ^9Percent ^4Unlocked", client);
-        await Task.Delay(TimeSpan.FromSeconds(4));
+        await Task.Delay(TimeSpan.FromSeconds(4), cancellationToken)
+            .ConfigureAwait(false);
 
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks7);
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks8);
@@ -87,7 +91,8 @@ internal static class Mw2GameFunctions
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks15);
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks16);
         iPrintLn(xbox!, "50 ^9Percent ^4Unlocked", client);
-        await Task.Delay(TimeSpan.FromSeconds(4));
+        await Task.Delay(TimeSpan.FromSeconds(4), cancellationToken)
+            .ConfigureAwait(false);
 
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks17);
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks18);
@@ -96,7 +101,8 @@ internal static class Mw2GameFunctions
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks21);
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks22);
         iPrintLn(xbox!, "75 ^9Percent ^4Unlocked", client);
-        await Task.Delay(TimeSpan.FromSeconds(4));
+        await Task.Delay(TimeSpan.FromSeconds(4), cancellationToken)
+            .ConfigureAwait(false);
 
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks23);
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks24);
@@ -106,9 +112,17 @@ internal static class Mw2GameFunctions
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks28);
         Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks29);
         iPrintLn(xbox!, "100 ^9Percent ^4Unlocked", client);
-        await Task.Delay(TimeSpan.FromMilliseconds(200));
+        await Task.Delay(TimeSpan.FromMilliseconds(200), cancellationToken)
+            .ConfigureAwait(false);
 
         iPrintLnBold(xbox!, "^2Completed Challenges!", client);
+    }
+
+    public static void EndGame(IXboxConsole xboxConsole)
+    {
+        int client = xboxConsole.ReadInt32(Constants.NonHostEndGame);
+
+        Cbuf_AddText(xboxConsole!, $"cmd mr {client} -1 endround;");
     }
 
     public static bool Cg_DvarGetBool(IXboxConsole xboxConsole, string commandString)
@@ -132,9 +146,89 @@ internal static class Mw2GameFunctions
             parameters
         );
 
+#pragma warning disable IDE1006 // Naming style warning disable, We are naming this iPrintLn because thats what the game calls it.
     public static void iPrintLn(IXboxConsole xboxConsole, string text, int client = -1)
         => Cg_GameSendServerCommand(xboxConsole, client, 0, $"f \"{text}\"");
 
     public static void iPrintLnBold(IXboxConsole xboxConsole, string text, int client = -1)
         => Cg_GameSendServerCommand(xboxConsole, client, 0, $"c \"{text}\"");
+#pragma warning restore IDE1006
+
+    public static void SetPrestige(IXboxConsole xboxConsole, int prestige = 10)
+    {
+        if (prestige < Constants.MinPrestige)
+            throw new ArgumentOutOfRangeException($"Prestige must be greater than {Constants.MinPrestige - 1} & less than prestige {Constants.MaxPrestige + 1}");
+
+        if (prestige > Constants.MaxPrestige)
+            throw new ArgumentOutOfRangeException($"Prestige must be greater than {Constants.MinPrestige - 1} & less than prestige {Constants.MaxPrestige + 1}");
+
+
+        byte[] prestigeBytes = BitConverter
+            .GetBytes(prestige);
+
+        xboxConsole.DebugTarget
+            .SetMemory
+            (
+                Constants.PrestigeAddress,
+                (uint)prestigeBytes.Length,
+                prestigeBytes,
+                out _
+            );
+    }
+
+    public static void SetLevel(IXboxConsole xboxConsole, int level = 70)
+    {
+        if (level < Constants.MinLevel)
+            throw new ArgumentOutOfRangeException($"Level must be greater than {Constants.MinLevel - 1} & less than level {Constants.MaxLevel + 1}");
+
+        if (level > Constants.MaxLevel)
+            throw new ArgumentOutOfRangeException($"Level must be greater than {Constants.MinLevel - 1} & less than level {Constants.MaxLevel + 1}");
+
+        byte[] levelBytes = BitConverter.GetBytes(Constants.LevelTable[level - 1]);
+
+        xboxConsole.DebugTarget
+            .SetMemory
+            (
+                Constants.LevelAddress,
+                (uint)levelBytes.Length,
+                levelBytes,
+                out _
+            );
+    }
+
+    public static void SetName(IXboxConsole xboxConsole, ReadOnlySpan<char> newName)
+    {
+        if (newName.Length > Constants.MaxNameCharLength)
+            newName = newName[..Constants.MaxNameCharLength];
+
+        Span<byte> nameBytes = stackalloc byte[Constants.MaxNameCharLength];
+        Encoding.ASCII.GetBytes(newName, nameBytes);
+
+        xboxConsole.DebugTarget
+            .SetMemory
+            (
+                Constants.NameAddress,
+                (uint)nameBytes.Length,
+                nameBytes.ToArray(),
+                out _
+            );
+    }
+
+    public static void SetClanName(IXboxConsole xboxConsole, ReadOnlySpan<char> newClanName)
+    {
+        if (newClanName.Length > Constants.MaxClanCharLength)
+            newClanName = newClanName[..Constants.MaxClanCharLength];
+
+        Span<byte> clanNameBytes = stackalloc byte[Constants.MaxClanCharLength];
+        Encoding.ASCII.GetBytes(newClanName, clanNameBytes);
+
+        xboxConsole.DebugTarget
+            .SetMemory
+            (
+                Constants.ClanAddress,
+                (uint)clanNameBytes.Length,
+                clanNameBytes.ToArray(),
+                out _
+            );
+    }
 }
