@@ -1,5 +1,4 @@
-﻿//#define TestSetMemory_cpp
-using System.Text;
+﻿using System.Text;
 
 using XDevkit;
 using XDRPCPlusPlus;
@@ -43,68 +42,18 @@ internal sealed class G_Client
                 );
 
             bytes = bytes[..bytes.IndexOf((byte)0x00)];
-
-            unsafe
-            {
-                fixed (byte* bytePtr = bytes)
-                    _clientName = Encoding.UTF8.GetString(bytePtr, bytes.Length);
-            }
+            _clientName = Encoding.UTF8.GetString(bytes);
 
             return _clientName;
         }
 
         set
         {
-
-#if TestSetMemory_cpp
-            Span<byte> nameBytes = stackalloc byte[_maxNameCharCount];
-            
-            unsafe
-            {
-                fixed (char* charPtr = value)
-                fixed (byte* bytePtr = nameBytes)
-                {
-                    Encoding.ASCII
-                        .GetBytes
-                        (
-                            charPtr,
-                            (value.Length > _maxNameCharCount) ? _maxNameCharCount : value.Length,
-                            bytePtr,
-                            _maxNameCharCount
-                        );
-
-                    _xboxConsole
-                        .DebugTarget
-                        .SetMemory_cpp
-                        (
-                            _correctedNameAddress,
-                            (uint)nameBytes.Length,
-                            ref bytePtr[0], // I wonder if this works?
-                            out _
-                        );
-                }
-#else
-            Span<byte> nameBytes = stackalloc byte[_maxNameCharCount];
-            
             if (value.Length > _maxNameCharCount)
-            {
-                unsafe
-                {
-                    fixed (char* charPtr = value)
-                    fixed (byte* bytePtr = nameBytes)
-                        Encoding.ASCII
-                        .GetBytes
-                        (
-                            charPtr,
-                            _maxNameCharCount,
-                            bytePtr,
-                            _maxNameCharCount
-                        );
-                }
-            }
+                value = value[.._maxNameCharCount];
 
-            else
-                nameBytes = Encoding.ASCII.GetBytes(value);
+            Span<byte> nameBytes = stackalloc byte[_maxNameCharCount];
+            Encoding.ASCII.GetBytes(value, nameBytes);
 
             _xboxConsole
                 .DebugTarget
@@ -115,7 +64,6 @@ internal sealed class G_Client
                     nameBytes.ToArray(),
                     out _
                 );
-#endif
         }
     }
 
