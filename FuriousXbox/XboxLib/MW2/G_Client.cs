@@ -31,7 +31,7 @@ internal sealed class G_Client
     public IXboxConsole XboxConsole => _xboxConsole;
 
     private readonly uint _correctedNameAddress;
-    private string _clientName = string.Empty;
+    private string clientName = string.Empty;
     public string ClientName
     {
         get
@@ -44,9 +44,9 @@ internal sealed class G_Client
                 );
 
             bytes = bytes[..bytes.IndexOf((byte)0x00)];
-            _clientName = Encoding.UTF8.GetString(bytes);
+            clientName = Encoding.UTF8.GetString(bytes);
 
-            return _clientName;
+            return clientName;
         }
 
         set

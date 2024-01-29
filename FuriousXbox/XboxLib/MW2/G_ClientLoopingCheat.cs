@@ -6,18 +6,9 @@ using LordVirusMw2XboxLib;
 #nullable enable
 
 internal sealed class G_ClientLoopingCheat : IGameCheat
-{
-    private uint CorrectedCheatAddress =>
-        G_ClientStructOffset.Array_BaseAddress +
-            (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
-                _cheatOffset;
-
-    private CancellationTokenSource? _updaterCancellationTokenSource = new CancellationTokenSource();
-
+{    
     private readonly IXboxConsole _xboxConsole;
     private readonly G_ClientStructOffset _cheatOffset;
-
-    private bool _enabled = false;
 
     private readonly string? _cheatName;
     private readonly int _clientNumber = 0;
@@ -28,6 +19,15 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
     private readonly byte[]? _offBytes;
 
     private readonly IEnumerable<IGameCheat>? _gameCheats;
+
+    private CancellationTokenSource? updaterCancellationTokenSource = new CancellationTokenSource();
+
+    private uint CorrectedCheatAddress =>
+        G_ClientStructOffset.Array_BaseAddress +
+            (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
+                _cheatOffset;
+
+    private bool enabled = false;
 
     public G_ClientLoopingCheat(
         IXboxConsole xboxConsole,
@@ -58,6 +58,9 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
         _xboxConsole = xboxConsole;
         _cheatOffset = cheatOffset;
         _clientNumber = clientIndex;
+
+        if (onBytes.Length != offBytes.Length)
+            throw new ArgumentOutOfRangeException("Error: onBytes and offBytes must have the same number of bytes.");
 
         _onBytes = onBytes;
         _offBytes = offBytes;
@@ -130,7 +133,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
 
         finally
         {
-            _enabled = false;
+            enabled = false;
 
             if (_cheatName is not null)
                 Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^1Disabled", _clientNumber);
@@ -141,10 +144,10 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
     {
         try
         {
-            if (_updaterCancellationTokenSource is null)
-                _updaterCancellationTokenSource = new CancellationTokenSource();
+            if (updaterCancellationTokenSource is null)
+                updaterCancellationTokenSource = new CancellationTokenSource();
 
-            _ = SetLoop(_updaterCancellationTokenSource.Token)
+            _ = SetLoop(updaterCancellationTokenSource.Token)
                 .ConfigureAwait(false);
         }
 
@@ -153,26 +156,26 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
             return;
         }
 
-        _enabled = true;
+        enabled = true;
     }
 
     public void Disable()
     {
-        _updaterCancellationTokenSource?.Cancel();
-        _updaterCancellationTokenSource = null;
-        _enabled = false;
+        updaterCancellationTokenSource?.Cancel();
+        updaterCancellationTokenSource = null;
+        enabled = false;
     }
 
     public bool GetValue()
     {
-        return _enabled;
+        return enabled;
     }
 
     public void Toggle()
     {
-        _enabled = !_enabled;
+        enabled = !enabled;
 
-        if (_enabled)
+        if (enabled)
             Enable();
         else
             Disable();

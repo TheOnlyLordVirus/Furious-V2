@@ -7,15 +7,8 @@ using LordVirusMw2XboxLib;
 
 internal sealed class G_ClientCheat : IGameCheat
 {
-    private uint CorrectedCheatAddress => 
-        G_ClientStructOffset.Array_BaseAddress + 
-            (G_ClientStructOffset.StructSize * (uint)_clientNumber) + 
-                _cheatOffset;
-
     private readonly IXboxConsole _xboxConsole;
     private readonly G_ClientStructOffset _cheatOffset;
-
-    private bool _enabled = false;
 
     private readonly string? _cheatName;
     private readonly int _clientNumber = 0;
@@ -23,6 +16,13 @@ internal sealed class G_ClientCheat : IGameCheat
 
     private readonly byte[] _onBytes;
     private readonly byte[] _offBytes;
+
+    private uint CorrectedCheatAddress => 
+        G_ClientStructOffset.Array_BaseAddress + 
+            (G_ClientStructOffset.StructSize * (uint)_clientNumber) + 
+                _cheatOffset;
+
+    private bool enabled = false;
 
     public G_ClientCheat
     (
@@ -87,7 +87,7 @@ internal sealed class G_ClientCheat : IGameCheat
             return;
         }
 
-        _enabled = true;
+        enabled = true;
     }
 
     public void Disable()
@@ -110,7 +110,7 @@ internal sealed class G_ClientCheat : IGameCheat
             return;
         }
 
-        _enabled = false;
+        enabled = false;
     }
 
     public byte[] GetBytes()
@@ -139,9 +139,9 @@ internal sealed class G_ClientCheat : IGameCheat
 
     public void Toggle()
     {
-        _enabled = !(GetValue());
+        enabled = !(GetValue());
 
-        if (_enabled)
+        if (enabled)
             Enable();
         else
             Disable();
