@@ -1,7 +1,7 @@
 ﻿using XDevkit;
 using XDRPCPlusPlus;
 
-using LordVirusMw2XboxLib;
+namespace LordVirusMw2XboxLib;
 
 #nullable enable
 
