@@ -6,6 +6,7 @@ using XDevkit;
 using LordVirusMw2XboxLib;
 
 using FuriousXbox.XboxLib.MW2;
+using XDRPC;
 
 namespace FuriousXbox
 {
@@ -49,6 +50,7 @@ namespace FuriousXbox
             GClientNameTextBox.IsEnabled = true;
             ThermalRedBoxesCheatButton.IsEnabled = true;
             UnlockAllCheatButton.IsEnabled = true;
+            DebugButton.IsEnabled = true;
         }
         
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
@@ -100,13 +102,13 @@ namespace FuriousXbox
             if (xboxConsole is null)
                 return;
 
-            if (checkBox1.IsChecked ?? false)
-                xexManager.call(xboxConsole, 0, 1);
-            else
-                xexManager.call(xboxConsole, 0, 0);
+            //if (checkBox1.IsChecked ?? false)
+            //    xexManager.call(xboxConsole, 0, 1);
+            //else
+            //    xexManager.call(xboxConsole, 0, 0);
 
-            if (xexManager.callBack(xboxConsole, 0))
-                 MessageBox.Show("xex Callback");
+            //if (xexManager.callBack(xboxConsole, 0))
+            //     MessageBox.Show("xex Callback");
         }
 
         private void UnlockAllCheatButton_Click(object sender, RoutedEventArgs e)
@@ -156,6 +158,11 @@ namespace FuriousXbox
         private void ClientComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GClientNameTextBox.Text = SelectedClient?.ClientName;
+        }
+
+        private void DebugButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

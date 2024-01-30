@@ -1,4 +1,6 @@
-﻿namespace LordVirusMw2XboxLib;
+﻿using System.Reflection.Emit;
+
+namespace LordVirusMw2XboxLib;
 
 internal class Mw2XboxLibConstants
 {
