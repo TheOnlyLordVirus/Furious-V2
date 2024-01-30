@@ -113,7 +113,7 @@ internal sealed class G_ClientCheat : IGameCheat
         enabled = false;
     }
 
-    public byte[] GetBytes()
+    private byte[] GetBytes()
     {
         return _xboxConsole
                 .ReadBytes

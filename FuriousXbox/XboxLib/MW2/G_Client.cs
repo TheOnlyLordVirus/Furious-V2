@@ -227,8 +227,8 @@ internal sealed class G_Client
     //private IGameCheat? _killstreakBullet;
     //public IGameCheat? KillstreakBullet => _killstreakBullet;
 
-    public async Task UnlockAll(CancellationToken cancellationToken = default) =>
-        await Functions.UnlockAll(_xboxConsole, _clientIndex, cancellationToken);
+    public Task UnlockAll(CancellationToken cancellationToken = default) =>
+        Functions.UnlockAll(_xboxConsole, _clientIndex, cancellationToken);
 
 #if DEBUG
     public IGameCheat? DebugCheat;
