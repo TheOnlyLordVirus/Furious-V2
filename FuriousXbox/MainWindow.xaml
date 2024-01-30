@@ -27,6 +27,7 @@
         <Button x:Name="ThermalRedBoxesCheatButton" Content="Thermal Redbox" HorizontalAlignment="Left" Margin="161,263,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="ThermalRedBoxesCheatButton_Click"/>
 
         <Button x:Name="UnlockAllCheatButton" Content="Unlock All" HorizontalAlignment="Left" Margin="327,263,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="UnlockAllCheatButton_Click"/>
+        <Button x:Name="DebugButton" Content="Debug" HorizontalAlignment="Left" Margin="400,345,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="DebugButton_Click"/>
 
         <GroupBox Header="GroupBox" Margin="617,132,19,68" Grid.ColumnSpan="2">
             <Grid Margin="12,0,-12,0" >
