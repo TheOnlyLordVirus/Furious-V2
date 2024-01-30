@@ -231,4 +231,8 @@ internal static class Mw2GameFunctions
                 out _
             );
     }
+    public static void testFunc()
+    {
+        
+    }
 }

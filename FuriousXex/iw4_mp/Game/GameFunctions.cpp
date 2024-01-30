@@ -1,4 +1,5 @@
 #include "GameFunctions.h"
+#include "..//EntryPoint.h"
 #include "..//Cheats/Addresses.h"
 #include "..//Cheats/Calls.h"
 
@@ -99,3 +100,4 @@ void DObjSetThermalRender(DObj *obj, bool enabled) {
 	auto func = reinterpret_cast<void(*)(DObj*, bool)>(0x822B0210);
 	func(obj, enabled);
 }
+

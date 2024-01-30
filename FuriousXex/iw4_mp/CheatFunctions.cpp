@@ -177,7 +177,6 @@ bool isAlive[18];
 bool sameTeam[18];
 Vector3 targetBone[18];
 float clientDis[18];
-bool inGame = false;
 
 
 bool clientCheckAB(int client)

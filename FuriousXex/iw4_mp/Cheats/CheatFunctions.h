@@ -167,3 +167,4 @@ void SetInfAmmo(bool value);
 void SetAimbot(bool value);
 void loopFunc();
 bool abStart;
+bool inGame;

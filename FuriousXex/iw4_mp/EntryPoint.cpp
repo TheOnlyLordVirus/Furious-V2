@@ -5,8 +5,6 @@
 #include "Utilities/Detours.h"
 #include "Cheats/Calls.h"
 
-bool inGame = false;
-
 namespace colorMgr
 {
 	color mw2_main;
@@ -129,16 +127,15 @@ const float colorWhite[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 const float colorFadedBlack[4] = { 0.0f, 0.0f, 0.0f, 0.75f };
 const float color_light[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-RainbowRGB colorRainbow;
 RainbowRGB fogRB;
-RainbowRGB sunRB;
-
+RainbowRGB lightRB;
+RainbowRGB rainbowRGB;
+int rainbowSpeed = 1;
 Detour<void> r_endframe;
 void R_EndFrame_Detour() {
 
 	Font_s* font = CL_RegisterFont(FONT_NORMAL, 0);
 	auto material = Material_RegisterHandle(MATERIAL_WHITE, 3);
-	colorMgr::setColor(color(colorRainbow.run(1)));
 
 	if (Dvar_GetBool("cl_ingame"))
 	{
@@ -199,12 +196,13 @@ void CL_GamepadButtonEventForPort_Detour(int portIndex, int key, int down, unsig
 
 Detour<void> r_generatesorteddrawsurfs;
 void R_GenerateSortedDrawSurfs_Detour(int viewInfoIndex, GfxSceneParms *sceneParms, GfxViewParms *viewParmsDpvs, GfxViewParms *viewParmsDraw) {
-	fogRB.run(5);
-
-	for (int i = 0; i < 256; i++) {
-		sceneParms->primaryLights[i].Color = colorRGB(fogRB.rgb);
+	if (tog_RGB_light)
+	{
+	for (int i = 0; i < 256; i++) 
+	{
+		sceneParms->primaryLights[i].Color = colorRGB(rainbowRGB.rgb);
 	}
-
+	}
 	r_generatesorteddrawsurfs.CallOriginal(viewInfoIndex, sceneParms, viewParmsDpvs, viewParmsDraw);
 }
 
@@ -212,11 +210,14 @@ Detour<void> r_setframefog;
 void R_SetFrameFog_Detour(GfxCmdBufInput *input) {
 	if (Dvar_GetBool("cl_ingame"))
 	{
+		if (tog_RGB_fog)
+		{
 		GfxBackEndData * backend = (GfxBackEndData*)(input->get<unsigned int>(0x53C));
 	
 		backend->fogSettings.fogStart = 50.0f;
 		backend->fogSettings.sunFogScale = 8.0f;
-		backend->fogSettings.color = floatColorToUInt(color_light);
+		backend->fogSettings.color = floatColorToUInt(rainbowRGB.rgb);
+		}
 	}
 	r_setframefog.CallOriginal(input);
 }
@@ -224,6 +225,8 @@ void R_SetFrameFog_Detour(GfxCmdBufInput *input) {
 Detour<void> r_addCmdDrawStrechPic;
 void R_AddCmdDrawStretchPic_Hook(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const float* col, materialx* shader)
 {
+	if (tog_RGB_hud)
+	{
 	//R_AddCmdDrawStretchPic_Detour(&x, &w, col, shader);
 	const float* saveColor = col;
 	color checkColor = (float*)&col;
@@ -249,15 +252,119 @@ void R_AddCmdDrawStretchPic_Hook(float x, float y, float w, float h, float s0, f
 		col = (float*)&checkColor;
 	}
 	//DbgPrint("%i %s\n", (int)shader, shader->material);
+	}
 	r_addCmdDrawStrechPic.CallOriginal(x, y, w, h, s0, t0, s1, t1, col, shader);
 }
-Detour<void> menuPaintAll;
 
+#pragma region furiousTest
+namespace furious
+{
+	enum callBackIndex
+	{
+		CB_fog = 0,
+		CB_light = 1,
+		CB_hud = 2,
+	};
+	//temp
+	int memOfs = 0x82D67000;
+	int memInterval = 4;
+	char* getChar(int intVal)
+	{
+		int getOfs = memOfs + memInterval * intVal;
+		return (char*)getOfs;
+	}
+
+	void setg(int intVal, int val)
+	{
+		int getOfs = memOfs + memInterval * intVal;
+		*(int*)getOfs = val;
+	}
+
+	int g(int intVal)
+	{
+		int getOfs = memOfs + memInterval * intVal;
+		return *(int*)getOfs;
+	}
+
+	float f(int intVal)
+	{
+		int getOfs = memOfs + memInterval * intVal;
+		return *(float*)getOfs;
+	}
+
+	bool getBool(int intVal)
+	{
+		int getOfs = memOfs + memInterval * intVal;
+		return *(bool*)getOfs + 3;
+	}
+
+
+	int rCallAddr = 0x82D67100;
+	int callAddr = 0x82D67200;
+	void call(int index, int value)
+	{
+		*(int*)(callAddr + (index * 4)) = value;
+	}
+
+	int rCall(int index)
+	{
+		return *(int*)(rCallAddr + (index * 4));
+	}
+	void rCalled(int index)
+	{
+		*(int*)(rCallAddr + (index * 4)) = 0;
+	}
+
+	bool callBack(int index, int *outCall)
+	{
+		int getCall = rCall(index);
+		if (getCall > 0)
+		{
+			*outCall = getCall;
+			rCalled(index);
+			return true;
+		}
+		return false;
+	}
+	//			//DbgPrint("callBack Xex\n");
+
+	void callBackProcess()
+	{
+		int callFog;
+		if (callBack(CB_fog, &callFog))
+			tog_RGB_fog = (callFog == 2);
+
+		int callLight;
+		if (callBack(CB_light, &callLight))
+			tog_RGB_light = (callLight == 2);
+
+		int callHud;
+		if (callBack(CB_hud, &callHud))
+			tog_RGB_hud = (callHud == 2);
+	}
+	void caller()
+	{
+		if (g(1) == 1)
+		{
+			setg(1, 0);
+			call(0, 1337);
+		}
+	}
+}
+
+#pragma endregion
+
+Detour<void> menuPaintAll;
 
 void Menu_PaintAll(int a2)
 {
 	//drawText("testing", 100, 100, 3, FONT_NORMAL, white, align_left);
 	bool inGame = Dvar_GetBool("cl_ingame");
+	furious::callBackProcess();
+	if (tog_RGB_fog ||tog_RGB_light || tog_RGB_hud)
+		rainbowRGB.run(rainbowSpeed);
+
+	colorMgr::setColor(color(rainbowRGB.rgb));
 
 	if (inGame)
 	{
@@ -277,7 +384,7 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD Reason, LPVOID lpVoid) {
 		r_endframe.SetupDetour(0x82351748, R_EndFrame_Detour);
 		//r_adddObjtoscene.SetupDetour(0x82352A98, R_AddDObjToScene_Detour);
 		//cl_gamepadbuttoneventforport.SetupDetour(0x8213DEF8, CL_GamepadButtonEventForPort_Detour);
-		//r_generatesorteddrawsurfs.SetupDetour(0x823566F8, R_GenerateSortedDrawSurfs_Detour);
+		r_generatesorteddrawsurfs.SetupDetour(0x823566F8, R_GenerateSortedDrawSurfs_Detour);
 		r_setframefog.SetupDetour(0x82395278, R_SetFrameFog_Detour);
 		r_addCmdDrawStrechPic.SetupDetour(0x821384D8, R_AddCmdDrawStretchPic_Hook);
 		//bg_getviewmodelweaponindex.SetupDetour(0x820E23C8, BG_GetViewmodelWeaponIndex_Detour);
@@ -296,7 +403,7 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD Reason, LPVOID lpVoid) {
 		r_endframe.TakeDownDetour();
 		//r_adddObjtoscene.TakeDownDetour();
 		//cl_gamepadbuttoneventforport.TakeDownDetour();
-		//r_generatesorteddrawsurfs.TakeDownDetour();
+		r_generatesorteddrawsurfs.TakeDownDetour();
 		r_setframefog.TakeDownDetour();
 		r_addCmdDrawStrechPic.TakeDownDetour();
 		Sleep(1000);
