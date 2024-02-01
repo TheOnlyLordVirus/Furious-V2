@@ -137,12 +137,6 @@ void R_EndFrame_Detour() {
 	Font_s* font = CL_RegisterFont(FONT_NORMAL, 0);
 	auto material = Material_RegisterHandle(MATERIAL_WHITE, 3);
 
-	if (Dvar_GetBool("cl_ingame"))
-	{
-		abStart = true;
-		loopFunc();
-		SetAimbot(abStart);
-	}
 
 	//DrawShader(screen_res[0] / 2, (screen_res[1] / 2) - (screen_res[1] / 4), 420, 280, colorFadedBlack, MATERIAL_WHITE, ALIGN_CENTER, ALIGN_BOTTOM);
 	//DrawText("", screen_res[0] / 2, (screen_res[1] / 2) - (screen_res[1] / 4) + 40, 0.95f, FONT_NORMAL, colorWhite, ALIGN_CENTER, ALIGN_TOP);
@@ -366,9 +360,11 @@ void Menu_PaintAll(int a2)
 
 	colorMgr::setColor(color(rainbowRGB.rgb));
 
-	if (inGame)
+	if (Dvar_GetBool("cl_ingame"))
 	{
-
+		abStart = true;
+		loopFunc();
+		SetAimbot(abStart);
 	}
 
 	menuPaintAll.CallOriginal(a2);
@@ -381,7 +377,7 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD Reason, LPVOID lpVoid) {
 
 		screen_res = (int*)(0x83647880);
 		menuPaintAll.SetupDetour(0x82285E98, Menu_PaintAll);
-		r_endframe.SetupDetour(0x82351748, R_EndFrame_Detour);
+		//r_endframe.SetupDetour(0x82351748, R_EndFrame_Detour);
 		//r_adddObjtoscene.SetupDetour(0x82352A98, R_AddDObjToScene_Detour);
 		//cl_gamepadbuttoneventforport.SetupDetour(0x8213DEF8, CL_GamepadButtonEventForPort_Detour);
 		r_generatesorteddrawsurfs.SetupDetour(0x823566F8, R_GenerateSortedDrawSurfs_Detour);
@@ -400,7 +396,7 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD Reason, LPVOID lpVoid) {
 		
 		Sleep(1000);
 		menuPaintAll.TakeDownDetour();
-		r_endframe.TakeDownDetour();
+		//r_endframe.TakeDownDetour();
 		//r_adddObjtoscene.TakeDownDetour();
 		//cl_gamepadbuttoneventforport.TakeDownDetour();
 		r_generatesorteddrawsurfs.TakeDownDetour();

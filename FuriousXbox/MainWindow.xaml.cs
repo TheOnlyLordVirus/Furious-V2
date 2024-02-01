@@ -245,5 +245,10 @@ namespace FuriousXbox
         {
             GClientNameTextBox.Text = SelectedClient?.ClientName;
         }
+
+        private void DebugButton_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedClient?.KillstreakBullet.Toggle();
+        }
     }
 }

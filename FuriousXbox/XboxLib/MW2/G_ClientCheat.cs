@@ -127,9 +127,11 @@ internal sealed class G_ClientCheat : IGameCheat
     {
         try
         {
+            byte[] test = GetBytes();
+
             return Enumerable.SequenceEqual
                 (
-                    GetBytes(),
+                    test,
                     _onBytes
                 );
         }

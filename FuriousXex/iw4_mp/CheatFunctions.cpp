@@ -283,7 +283,7 @@ void loopFunc()
 				if (userClient != i)
 				{
 					clientDis[i] = GetDistance(clientOrigin[i], userOrigin);
-					overrideBoth = true;
+					overrideBoth = false;
 					sameTeam[i] = isSameTeam(userClient, i, isGTffa(), overrideBoth, overrideTeam);
 
 					if (isAlive[i])

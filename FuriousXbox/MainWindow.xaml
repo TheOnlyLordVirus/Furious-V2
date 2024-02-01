@@ -9,10 +9,6 @@
 
 
     <Grid Background="#FFBA2B2B" Margin="0,0,0,-6">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="240*"/>
-            <ColumnDefinition Width="67*"/>
-        </Grid.ColumnDefinitions>
         <Label x:Name="ToolLogo" Content="FURIOUS XBOX" HorizontalAlignment="Left" Margin="137,17,0,0" VerticalAlignment="Top" FontSize="72" Height="106" Width="497"/>
 
         <Button x:Name="ConnectButton" Content="Connect" HorizontalAlignment="Left" Margin="327,128,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" Click="ConnectButton_Click"/>
@@ -28,19 +24,6 @@
 
         <Button x:Name="UnlockAllCheatButton" Content="Unlock All" HorizontalAlignment="Left" Margin="327,263,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="UnlockAllCheatButton_Click"/>
         <Button x:Name="DebugButton" Content="Debug" HorizontalAlignment="Left" Margin="400,345,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="DebugButton_Click"/>
-
-        <GroupBox Header="GroupBox" Margin="617,132,19,68" Grid.ColumnSpan="2">
-            <Grid Margin="12,0,-12,0" >
-                <CheckBox x:Name="checkBox1" Content="Test" HorizontalAlignment="Center" VerticalAlignment="Top" Checked="CheckBox_Checked" Grid.Column="1" Margin="0,37,0,0" Height="15" Width="41"/>
-                <Button x:Name="button_test" Content="Test" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-4.089,-1.802" Height="20" Width="115" Click="Button_Click" Grid.ColumnSpan="2" Margin="10,29,0,0"/>
-                <CheckBox Content="CheckBox" HorizontalAlignment="Center" Margin="0,82,0,0" VerticalAlignment="Top" Height="15" Width="70" Checked="CheckBox_Checked_1" Unchecked="check1_Unchecked"/>
-                <CheckBox x:Name="check1" Content="CheckBox" HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="71" Checked="check1_Checked"/>
-                <CheckBox x:Name="check2" Content="CheckBox" HorizontalAlignment="Center" Margin="0,121,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="check3" Content="CheckBox" HorizontalAlignment="Center" Margin="0,141,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="check4" Content="CheckBox" HorizontalAlignment="Center" Margin="0,161,0,0" VerticalAlignment="Top"/>
-            </Grid>
-        </GroupBox>
         <ComboBox x:Name="comboxRGB" HorizontalAlignment="Left" Margin="171,135,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
-
     </Grid>
 </Window>
