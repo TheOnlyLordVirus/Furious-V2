@@ -9,7 +9,7 @@ internal sealed class G_ClientLoopingCheat : IGameCheat
 {    
     private readonly IXboxConsole _xboxConsole;
     private readonly G_ClientStructOffset _cheatOffset;
-    private G_ClientStructOffset _correctedCheatAddress;
+    private readonly G_ClientStructOffset _correctedCheatAddress;
     private G_ClientStructOffset CorrectedCheatAddress
     {
         get => _correctedCheatAddress;
