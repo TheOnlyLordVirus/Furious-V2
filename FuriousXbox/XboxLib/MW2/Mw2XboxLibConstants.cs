@@ -2,7 +2,7 @@
 
 namespace LordVirusMw2XboxLib;
 
-internal class Mw2XboxLibConstants
+internal static class Mw2XboxLibConstants
 {
     #region G_ClientConstants
     public const Byte RedBoxesOn = 0x55;
