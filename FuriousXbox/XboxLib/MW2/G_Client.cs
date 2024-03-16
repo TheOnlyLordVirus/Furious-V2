@@ -64,13 +64,13 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
     }
 
 #if DEBUG
-    private readonly IGameCheat? debugCheat = null;
+    private readonly IGameCheat? _debugCheat = null;
     public IGameCheat? DebugCheat
     {
-        get => debugCheat;
+        get => _debugCheat;
         init
         {
-            //debugCheat = new G_ClientCheat
+            //_debugCheat = new G_ClientCheat
             //(
             //    XboxConsole,
             //    G_ClientStructOffset.DebugOffset,
@@ -171,13 +171,13 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 cheatName: "All Perks"
             );
 
-    private readonly IGameCheat infiniteAmmo = default!;
+    private readonly IGameCheat _infiniteAmmo = default!;
     public IGameCheat InfiniteAmmo 
     { 
-        get => infiniteAmmo;
+        get => _infiniteAmmo;
         init
         {
-            infiniteAmmo = new G_ClientLoopingCheat
+            _infiniteAmmo = new G_ClientLoopingCheat
             (
                 XboxConsole,
                 ClientIndex,
