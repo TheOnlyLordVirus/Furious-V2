@@ -175,7 +175,7 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
     public IGameCheat InfiniteAmmo 
     { 
         get => _infiniteAmmo;
-        init
+        private init
         {
             _infiniteAmmo = new G_ClientLoopingCheat
             (
