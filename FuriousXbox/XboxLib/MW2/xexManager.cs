@@ -9,7 +9,7 @@ using XDRPCPlusPlus;
 
 namespace FuriousXbox.XboxLib.MW2
 {
-    internal class xexManager
+    internal class XexManager
     {
         public static uint callAddr = 0x82D67100;
         public static uint rCallAddr = 0x82D67200;

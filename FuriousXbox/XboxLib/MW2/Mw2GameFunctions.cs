@@ -65,52 +65,52 @@ internal static class Mw2GameFunctions
             return;
         }
 
-        Cg_GameSendServerCommand(xbox!, client, 0, "s loc_warningsUI 0; loc_warnings 0;");
+        Sv_GameSendServerCommand(xbox!, client, 0, "s loc_warningsUI 0; loc_warnings 0;");
 
         iPrintLnBold(xbox!, "^2Starting Challenges!", client);
 
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks0);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks1);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks2);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks3);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks4);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks5);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks6);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks0);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks1);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks2);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks3);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks4);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks5);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks6);
         iPrintLn(xbox!, "25 ^9Percent ^4Unlocked", client);
         await Task.Delay(TimeSpan.FromSeconds(4), cancellationToken)
             .ConfigureAwait(false);
 
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks7);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks8);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks9);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks10);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks11);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks12);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks13);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks14);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks15);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks16);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks7);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks8);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks9);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks10);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks11);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks12);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks13);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks14);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks15);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks16);
         iPrintLn(xbox!, "50 ^9Percent ^4Unlocked", client);
         await Task.Delay(TimeSpan.FromSeconds(4), cancellationToken)
             .ConfigureAwait(false);
 
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks17);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks18);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks19);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks20);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks21);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks22);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks17);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks18);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks19);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks20);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks21);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks22);
         iPrintLn(xbox!, "75 ^9Percent ^4Unlocked", client);
         await Task.Delay(TimeSpan.FromSeconds(4), cancellationToken)
             .ConfigureAwait(false);
 
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks23);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks24);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks25);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks26);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks27);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks28);
-        Cg_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks29);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks23);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks24);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks25);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks26);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks27);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks28);
+        Sv_GameSendServerCommand(xbox!, client, 0, Constants.Unlocks29);
         iPrintLn(xbox!, "100 ^9Percent ^4Unlocked", client);
         await Task.Delay(TimeSpan.FromMilliseconds(200), cancellationToken)
             .ConfigureAwait(false);
@@ -139,7 +139,7 @@ internal static class Mw2GameFunctions
             new object[] { 0, commandString }
         );
 
-    public static void Cg_GameSendServerCommand(IXboxConsole xboxConsole, params object[] parameters)
+    public static void Sv_GameSendServerCommand(IXboxConsole xboxConsole, params object[] parameters)
         => xboxConsole.ExecuteRPC<int>
         (
             new XDRPCExecutionOptions(XDRPCMode.Title, Constants.Sv_GameSendServerCommand),
@@ -148,10 +148,10 @@ internal static class Mw2GameFunctions
 
 #pragma warning disable IDE1006 // Naming style warning disable, We are naming this iPrintLn because thats what the game calls it.
     public static void iPrintLn(IXboxConsole xboxConsole, string text, int client = -1)
-        => Cg_GameSendServerCommand(xboxConsole, client, 0, $"f \"{text}\"");
+        => Sv_GameSendServerCommand(xboxConsole, client, 0, $"f \"{text}\"");
 
     public static void iPrintLnBold(IXboxConsole xboxConsole, string text, int client = -1)
-        => Cg_GameSendServerCommand(xboxConsole, client, 0, $"c \"{text}\"");
+        => Sv_GameSendServerCommand(xboxConsole, client, 0, $"c \"{text}\"");
 #pragma warning restore IDE1006
 
     public static void SetPrestige(IXboxConsole xboxConsole, int prestige = 10)
@@ -230,9 +230,5 @@ internal static class Mw2GameFunctions
                 clanNameBytes.ToArray(),
                 out _
             );
-    }
-    public static void testFunc()
-    {
-        
     }
 }

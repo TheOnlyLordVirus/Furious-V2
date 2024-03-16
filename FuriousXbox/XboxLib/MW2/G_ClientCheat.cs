@@ -5,10 +5,25 @@ namespace LordVirusMw2XboxLib;
 
 #nullable enable
 
+using Functions = Mw2GameFunctions;
+
 internal sealed class G_ClientCheat : IGameCheat
 {
     private readonly IXboxConsole _xboxConsole;
     private readonly G_ClientStructOffset _cheatOffset;
+    private G_ClientStructOffset _correctedCheatAddress;
+    private G_ClientStructOffset CorrectedCheatAddress
+    {
+        get => _correctedCheatAddress;
+
+        init
+        {
+            _correctedCheatAddress =
+                G_ClientStructOffset.Array_BaseAddress +
+                    (G_ClientStructOffset.StructSize * (uint)_clientNumber) +
+                        _cheatOffset;
+        }
+    }
 
     private readonly string? _cheatName;
     private readonly int _clientNumber = 0;
@@ -17,12 +32,7 @@ internal sealed class G_ClientCheat : IGameCheat
     private readonly byte[] _onBytes;
     private readonly byte[] _offBytes;
 
-    private uint CorrectedCheatAddress => 
-        G_ClientStructOffset.Array_BaseAddress + 
-            (G_ClientStructOffset.StructSize * (uint)_clientNumber) + 
-                _cheatOffset;
-
-    private bool enabled = false;
+    private bool isEnabled = false;
 
     public G_ClientCheat
     (
@@ -79,7 +89,7 @@ internal sealed class G_ClientCheat : IGameCheat
                 );
 
             if (_cheatName is not null)
-                Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^2Enabled", _clientNumber);
+                Functions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^2Enabled", _clientNumber);
         }
 
         catch
@@ -87,7 +97,7 @@ internal sealed class G_ClientCheat : IGameCheat
             return;
         }
 
-        enabled = true;
+        isEnabled = true;
     }
 
     public void Disable()
@@ -102,36 +112,21 @@ internal sealed class G_ClientCheat : IGameCheat
                 );
 
             if (_cheatName is not null)
-                Mw2GameFunctions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^1Disabled", _clientNumber);
+                Functions.iPrintLn(_xboxConsole, $"{_cheatName}^7: ^1Disabled", _clientNumber);
         }
 
-        catch
-        {
-            return;
-        }
+        catch { return; }
 
-        enabled = false;
-    }
-
-    private byte[] GetBytes()
-    {
-        return _xboxConsole
-                .ReadBytes
-                (
-                    CorrectedCheatAddress,
-                    _byteCount
-                );
+        isEnabled = false;
     }
 
     public bool GetValue()
     {
         try
         {
-            byte[] test = GetBytes();
-
             return Enumerable.SequenceEqual
                 (
-                    test,
+                    Internal_GetBytes(),
                     _onBytes
                 );
         }
@@ -141,11 +136,19 @@ internal sealed class G_ClientCheat : IGameCheat
 
     public void Toggle()
     {
-        enabled = !(GetValue());
+        isEnabled = !(GetValue());
 
-        if (enabled)
+        if (isEnabled)
             Enable();
         else
             Disable();
     }
+
+    private byte[] Internal_GetBytes()
+        => _xboxConsole
+                .ReadBytes
+                (
+                    CorrectedCheatAddress,
+                    _byteCount
+                );
 }
