@@ -81,7 +81,19 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
     }
 #endif
 
-    public readonly IGameCheat Redboxes = new G_ClientLoopingCheat
+    public readonly IGameCheat Godmode
+        = new G_ClientCheat
+            (
+                XboxConsole,
+                G_ClientStructOffset.Godmode,
+                ClientIndex,
+                onBytes: Constants.GodModeOn,
+                offBytes: Constants.GodModeOff,
+                cheatName: "God Mode"
+            );
+
+    public readonly IGameCheat Redboxes 
+        = new G_ClientLoopingCheat
             (
                 XboxConsole,
                 G_ClientStructOffset.Redboxes,
@@ -98,17 +110,6 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 ClientIndex,
                 onByte: Constants.ThermalRedBoxesOn,
                 cheatName: "Thermal Red Boxes"
-            );
-
-    public readonly IGameCheat Godmode
-        = new G_ClientCheat
-            (
-                XboxConsole,
-                G_ClientStructOffset.Godmode,
-                ClientIndex,
-                onBytes: Constants.GodModeOn,
-                offBytes: Constants.GodModeOff,
-                cheatName: "God Mode"
             );
 
     public readonly IGameCheat NoRecoil
@@ -159,8 +160,8 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 cheatName: "Secondary Akimbo"
             );
 
-    public readonly IGameCheat AllPerks =
-        new G_ClientLoopingCheat
+    public readonly IGameCheat AllPerks 
+        = new G_ClientLoopingCheat
             (
                 XboxConsole,
                 G_ClientStructOffset.AllPerks,
