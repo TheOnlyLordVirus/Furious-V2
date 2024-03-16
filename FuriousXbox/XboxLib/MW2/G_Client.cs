@@ -64,7 +64,7 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
     }
 
 #if DEBUG
-    private IGameCheat? debugCheat = null;
+    private readonly IGameCheat? debugCheat = null;
     public IGameCheat? DebugCheat
     {
         get => debugCheat;
@@ -171,7 +171,7 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 cheatName: "All Perks"
             );
 
-    private IGameCheat infiniteAmmo = default!;
+    private readonly IGameCheat infiniteAmmo;
     public IGameCheat InfiniteAmmo 
     { 
         get => infiniteAmmo;
