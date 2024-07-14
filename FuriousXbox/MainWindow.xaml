@@ -4,26 +4,89 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FuriousXbox"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Furious Xbox Alpha v0.0" Height="450" Width="800">
+        Title="Furious MW2 Xbox Edition" Height="450" Width="800">
 
 
     <Grid Background="#FFBA2B2B" Margin="0,0,0,-6">
-        <Label x:Name="ToolLogo" Content="FURIOUS XBOX" HorizontalAlignment="Left" Margin="137,17,0,0" VerticalAlignment="Top" FontSize="72" Height="106" Width="497"/>
+        <TabControl>
+            <TabItem Header="Connect">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#FFF0F0F0"/>
+                        <GradientStop Color="#FF646464" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <Grid Background="#FF646464">
+                    <Label Content="Furious" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="80" FontFamily="Snap ITC"/>
+                    <Button x:Name="ConnectButton" Content="Connect" HorizontalAlignment="Center" VerticalAlignment="Center" Width="209" Height="71" Click="ConnectButton_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Non-Host">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#FFF0F0F0"/>
+                        <GradientStop Color="#FF646464" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <Grid Background="#FF646464">
+                    <CheckBox x:Name="NonHostAimbotCheckBox" IsEnabled="False" Content="Aimbot" HorizontalAlignment="Left" Margin="33,28,0,0" VerticalAlignment="Top" Checked="NonHostAimbotCheckBox_Checked" Unchecked="NonHostAimbotCheckBox_UnChecked"/>
+                    <CheckBox x:Name="NonHostLaserCheckBox" IsEnabled="False" Content="Laser" HorizontalAlignment="Left" Margin="33,48,0,0" VerticalAlignment="Top" Checked="NonHostLaserCheckBox_Checked" Unchecked="NonHostLaserCheckBox_UnChecked"/>
+                    <CheckBox x:Name="NonHostNoRecoilCheckBox" IsEnabled="False" Content="No Recoil" HorizontalAlignment="Left" Margin="33,68,0,0" VerticalAlignment="Top" Checked="NonHostNoRecoilCheckBox_Checked" Unchecked="NonHostNoRecoilCheckBox_UnChecked"/>
+                    <CheckBox x:Name="NonHostRedBoxesCheckBox" IsEnabled="False" Content="Red Boxes" HorizontalAlignment="Left" Margin="33,88,0,0" VerticalAlignment="Top" Checked="NonHostRedBoxesCheckBox_Checked"/>
+                    <CheckBox x:Name="NonHostThermalRedBoxesCheckBox" IsEnabled="False" Content="Thermal Red Boxes" HorizontalAlignment="Left" Margin="33,108,0,0" VerticalAlignment="Top" Checked="NonHostThermalRedBoxesCheckBox_Checked" Unchecked="NonHostThermalRedBoxesCheckBox_UnChecked"/>
+                    <CheckBox x:Name="NonHostProModCheckBox" IsEnabled="False" Content="Pro Mod" HorizontalAlignment="Left" Margin="33,128,0,0" VerticalAlignment="Top" Checked="NonHostProModCheckBox_Checked" Unchecked="NonHostProModCheckBox_UnChecked"/>
+                    <CheckBox x:Name="NonHostCartoonCheckBox" IsEnabled="False" Content="Cartoon" HorizontalAlignment="Left" Margin="33,148,0,0" VerticalAlignment="Top" Checked="NonHostCartoonCheckBox_Checked" Unchecked="NonHostCartoonCheckBox_UnChecked"/>
+                    <CheckBox x:Name="NonHostChromeCheckBox" IsEnabled="False" Content="Chrome" HorizontalAlignment="Left" Margin="33,168,0,0" VerticalAlignment="Top" Checked="NonHostChromeCheckBox_Checked" Unchecked="NonHostChromeCheckBox_UnChecked"/>
+                    <CheckBox x:Name="NonHostUiDebugCheckBox" IsEnabled="False" Content="UI Debug" HorizontalAlignment="Left" Margin="33,187,0,0" VerticalAlignment="Top" Width="71" Checked="NonHostUiDebugCheckBox_Checked" Unchecked="NonHostUiDebugCheckBox_UnChecked"/>
+                    <CheckBox x:Name="NonHostGameFxCheckBox" IsEnabled="False" Content="Game Fx" IsChecked="True" HorizontalAlignment="Left" Margin="33,207,0,0" VerticalAlignment="Top" Width="71" Checked="NonHostGameFxCheckBox_Checked" Unchecked="NonHostGameFxCheckBox_UnChecked"/>
+                    <Button x:Name="EndGameButton" IsEnabled="False" Content="End Game" HorizontalAlignment="Left" Margin="620,30,0,0" VerticalAlignment="Top" Click="EndGameButton_Click" Height="42" Width="109"/>
 
-        <Button x:Name="ConnectButton" Content="Connect" HorizontalAlignment="Left" Margin="327,128,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" Click="ConnectButton_Click"/>
-        <Button x:Name="GodModeCheatButton" Content="Godmode" HorizontalAlignment="Left" Margin="30,263,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="GodModeCheatButton_Click"/>
-        <Button x:Name="NoClipCheatButton" Content="No Clip" HorizontalAlignment="Left" Margin="30,313,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="NoClipCheatButton_Click"/>
-        <Button x:Name="UfoModeCheatButton" Content="Ufo Mode" HorizontalAlignment="Left" Margin="161,313,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="UfoModeCheatButton_Click"/>
-        <Button x:Name="InfAmmoCheatButton" Content="Infinite Ammo" HorizontalAlignment="Left" Margin="161,363,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="InfAmmoCheatButton_Click"/>
-        <Button x:Name="NoRecoilCheatButton" Content="No Recoil" HorizontalAlignment="Left" Margin="30,363,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="NoRecoilCheatButton_Click"/>
-        <ComboBox x:Name="ClientComboBox" IsEnabled="False" HorizontalAlignment="Left" Margin="327,230,0,0" VerticalAlignment="Top" Width="117" DropDownOpened="ClientComboBox_DropDownOpened" SelectionChanged="ClientComboBox_SelectionChanged" Height="22"/>
-        <TextBox x:Name="GClientNameTextBox" HorizontalAlignment="Left" Margin="478,230,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Height="22"/>
-        <Button x:Name="ChangeGClientNameButton" Content="Change Name" HorizontalAlignment="Left" Margin="478,263,0,0" VerticalAlignment="Top" Height="31" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="ChangeGClientNameButton_Click"/>
-        <Button x:Name="ThermalRedBoxesCheatButton" Content="Thermal Redbox" HorizontalAlignment="Left" Margin="161,263,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="ThermalRedBoxesCheatButton_Click"/>
+                    <Label Content="Name Changer:" HorizontalAlignment="Left" Margin="171,11,0,0" VerticalAlignment="Top" Width="113"/>
+                    <Button x:Name="ChangeNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="415,36,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeNameButton_Click"/>
+                    <TextBox x:Name="NameChangerTextBox" IsEnabled="false" MaxLength="34" HorizontalAlignment="Left" Margin="174,36,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="236" Height="20"/>
+                    <CheckBox x:Name="RealTimeNameChangeCheckBox" Content="Real Time Update" IsEnabled="false" HorizontalAlignment="Left" Margin="175,62,0,0" VerticalAlignment="Top" Width="122" Checked="RealTimeNameChangeCheckBox_Checked" Unchecked="RealTimeNameChangeCheckBox_Unchecked"/>
+                    <CheckBox x:Name="RainbowCheckBox" Content="Rainbow?" IsEnabled="false" HorizontalAlignment="Left" Margin="297,62,0,0" VerticalAlignment="Top" Width="75" Checked="RainbowCheckBox_Checked" Unchecked="RainbowCheckBox_Unchecked"/>
+                    <CheckBox x:Name="ButtonCheckBox" Content="Buttons?" IsEnabled="false" HorizontalAlignment="Left" Margin="375,62,0,0" VerticalAlignment="Top" Width="71" Checked="RainbowCheckBox_Checked" Unchecked="RainbowCheckBox_Unchecked"/>
 
-        <Button x:Name="UnlockAllCheatButton" Content="Unlock All" HorizontalAlignment="Left" Margin="327,263,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="UnlockAllCheatButton_Click"/>
-        <Button x:Name="DebugButton" Content="Debug" HorizontalAlignment="Left" Margin="400,345,0,0" VerticalAlignment="Top" Height="36" Width="117" Background="#FF2C2B2B" Foreground="White" IsEnabled="False" Click="DebugButton_Click"/>
-        <ComboBox x:Name="comboxRGB" HorizontalAlignment="Left" Margin="171,135,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
+                    <Label Content="Clan Tag Changer:" HorizontalAlignment="Left" Margin="172,85,0,0" VerticalAlignment="Top" Width="113"/>
+                    <Button x:Name="ChangeClanNameButton" IsEnabled="false" Content="Change" HorizontalAlignment="Left" Margin="415,111,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="ChangeClanNameButton_Click"/>
+                    <TextBox x:Name="ClanNameChangerTextBox" IsEnabled="false" MaxLength="4" HorizontalAlignment="Left" Margin="175,111,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="235" Height="20"/>
+
+                    <Label Content="Set Prestige:" HorizontalAlignment="Left" Margin="180,150,0,0" VerticalAlignment="Top" Height="25"/>
+                    <CheckBox x:Name="LoopPrestigeCheckBox" Content="Loop?" HorizontalAlignment="Left" Margin="247,207,0,0" VerticalAlignment="Top" Width="55" Checked="LoopPrestigeCheckBox_Checked" Unchecked="LoopPrestigeCheckBox_Unchecked" IsEnabled="False"/>
+                    <xctk:IntegerUpDown x:Name="PrestigeIntegerUpDown" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Margin="338,173,0,0" Height="23" Width="59"/>
+                    <Button x:Name="ChangePrestigeButton" IsEnabled="false" Content="Change" Click="ChangePrestigeButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="404,173,0,0" Height="23" Width="76"/>
+
+                    <Label VerticalAlignment="Top" Margin="338,149,0,0" HorizontalAlignment="Left" Content="Set Level:" Height="25"/>
+                    <CheckBox x:Name="LoopLevelCheckBox" Content="Loop?" HorizontalAlignment="Left" Margin="404,206,0,0" VerticalAlignment="Top" Width="52" Checked="LoopLevelCheckBox_Checked" Unchecked="LoopLevelCheckBox_Unchecked" IsEnabled="False"/>
+                    <xctk:IntegerUpDown x:Name="LevelIntegerUpDown" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,175,0,0" Height="22" Width="62"/>
+                    <Button x:Name="ChangeLevelButton" IsEnabled="false" Content="Change" Click="ChangeLevelButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="247,174,0,0" Height="23" Width="76"/>
+
+                    <Label Content="CBuffAddText:" HorizontalAlignment="Left" Margin="175,229,0,0" VerticalAlignment="Top" Width="113"/>
+                    <Button x:Name="CBuffAddTextButton" IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="404,254,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="CBuffAddTextButton_Click"/>
+                    <TextBox x:Name="CBuffAddTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="178,254,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+
+                    <ComboBox x:Name="RGBComboBox" IsEnabled="True" IsEditable="False" HorizontalAlignment="Left" Margin="620,105,0,0" VerticalAlignment="Top" Width="109" SelectionChanged="RGBCheckBox_SelectionChanged"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Host">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#FFF0F0F0"/>
+                        <GradientStop Color="#FF646464" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <Grid Background="#FF646464">
+                    <ComboBox x:Name="ClientComboBox" HorizontalAlignment="Left" Margin="25,26,0,0" VerticalAlignment="Top" Width="120" DropDownOpened="ClientComboBox_DropDownOpened"/>
+                    <Button x:Name="UnlockAllButton" Content="Unlock All" HorizontalAlignment="Left" Margin="25,70,0,0" VerticalAlignment="Top" Width="120" Click="UnlockAllButton_Click"/>
+
+                    <Label Content="SendGameServerCommand" HorizontalAlignment="Left" Margin="397,30,0,0" VerticalAlignment="Top" Width="176"/>
+                    <Button x:Name="SendGameServerCommandButton" IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="626,55,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="SendGameServerCommandButton_Click"/>
+                    <TextBox x:Name="SendGameServerCommandTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="400,55,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

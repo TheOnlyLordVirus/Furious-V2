@@ -4,33 +4,8 @@ namespace LordVirusMw2XboxLib;
 
 internal static class Mw2XboxLibConstants
 {
-    #region G_ClientConstants
-    public const Byte RedBoxesOn = 0x55;
-    public const Byte ThermalRedBoxesOn = 0x99;
-    public const Byte UfoModeOn = 0x02;
-    public const Byte NoClipOn = 0x99;
-    public const Byte NoRecoilOn = 0x04;
-    
-    public static readonly Byte[] GodModeOn = [0x00, 0xFF, 0xFF, 0xFF];
-    public static readonly Byte[] GodModeOff = [0x00, 0x00, 0x00, 0x64];
-                     
-    public static readonly Byte[] InfiniteAmmoOn = [0x0F, 0x00, 0x00, 0x00];
-    public static readonly Byte[] InfiniteAmmoOff = [0x00, 0x00, 0x00, 0x64];
-                     
-    public static readonly Byte[] AllPerksOn = [0xFF, 0xFF];
-    public static readonly Byte[] AllPerksOff = [0x00, 0x00];
-    #endregion
-
-    public const UInt32 NonHostEndGame = 0x826237E0;
-    public const UInt32 Cbuf_AddText = 0x82224990;
-    public const UInt32 Sv_GameSendServerCommand = 0x822548D8;
-    public const UInt32 Dvar_GetBool = 0x8229EEE8;
-
-    public const UInt32 PrestigeAddress = 0x831A0DD4;
-    public const UInt32 LevelAddress = 0x831A0DCC;
-
-    public const UInt32 NameAddress = 0x838BA824;
-    public const UInt32 ClanAddress = 0x82687060;
+    public const byte TrueByte = 0x01;
+    public const byte FalseByte = 0x00;
 
     public const Int32 MaxNameCharLength = 34;
     public const Int32 MaxClanCharLength = 4;
@@ -43,6 +18,49 @@ internal static class Mw2XboxLibConstants
     public const Int32 MaxLevel = 70;
     public const Int32 MinLevel = 1;
 
+    #region Non-Host
+    public const UInt32 LaserAddress = 0x82104093;
+    
+    public const UInt32 RedBoxAddress = 0x820F4234;
+    public static readonly byte[] RedBoxesOn = [0x60, 0x00, 0x00, 0x00]; // NOP
+    public static readonly byte[] RedBoxesOff = [0x41, 0x9A, 0x00, 0x0C];
+    
+    public const UInt32 NoRecoilAddress = 0x820E31F8;
+    public static readonly byte[] NoRecoilOn = [0x4E, 0x80, 0x00, 0x20];
+    public static readonly byte[] NoRecoilOff = [0x7D, 0x88, 0x02, 0xA6];
+    
+    public const UInt32 ThermalAddress = 0x82127C98;
+    public static readonly byte[] ThermalOn = [0x38, 0x60, 0x00, 0x01, 0x4E, 0x80, 0x00, 0x20];
+    public static readonly byte[] ThermalOff = [0x7D, 0x88, 0x02, 0xA6, 0x91, 0x81, 0xFF, 0xF8];
+
+    public const UInt32 EndGame = 0x826237E0;
+    public const UInt32 Cbuf_AddText = 0x82224990;
+    public const UInt32 Sv_GameSendServerCommand = 0x822548D8;
+    public const UInt32 Dvar_GetBool = 0x8229EEE8;
+
+    public const UInt32 PrestigeAddress = 0x831A0DD4;
+    public const UInt32 LevelAddress = 0x831A0DCC;
+
+    public const UInt32 NameAddress = 0x838BA824;
+    public const UInt32 ClanAddress = 0x82687060;
+    #endregion
+
+    #region G_ClientConstants
+    public const Byte G_ClientRedBoxesOn = 0x55;
+    public const Byte G_ClientThermalRedBoxesOn = 0x99;
+    public const Byte G_ClientUfoModeOn = 0x02;
+    public const Byte G_ClientNoClipOn = 0x99;
+    public const Byte G_ClientNoRecoilOn = 0x04;
+    
+    public static readonly Byte[] GodModeOn = [0x00, 0xFF, 0xFF, 0xFF];
+    public static readonly Byte[] GodModeOff = [0x00, 0x00, 0x00, 0x64];
+                     
+    public static readonly Byte[] InfiniteAmmoOn = [0x0F, 0x00, 0x00, 0x00];
+    public static readonly Byte[] InfiniteAmmoOff = [0x00, 0x00, 0x00, 0x64];
+                     
+    public static readonly Byte[] AllPerksOn = [0xFF, 0xFF];
+    public static readonly Byte[] AllPerksOff = [0x00, 0x00];
+    
     public const String Unlocks0 = "J 2056 206426 6525 7F 3500 99 3501 99 3502 99 3503 99 3504 99 3505 99 3506 99 3507 99 3508 99 3509 99 3510 99 3511 99 3512 99 3513 99 3514 99 3515 99 3516 99 3517 99 3518 99 3519 99 3520 99 3521 99 3522 99 3523 99 3524 99 3525 99 3526 99 3527 99 3528 99 3529 99 3530 99 3531 99 3532 99 3533 99 3534 99 3535 99 3536 99 3537 99 3538 99 3539 99 3540 99 3541 99 3542 99 3543 99 3544 99 3545 99 3546 99 3547 99 3548 99 3549 99 3550 99";
     public const String Unlocks1 = "J 3550 99 3551 99 3552 99 3553 99 3554 99 3555 99 3556 99 3557 99 3558 99 3559 99 3560 99 3561 99 3562 99 3563 99 3564 99 3565 99 3566 99 3567 99 3568 99 3569 99 3570 99 3571 99 3572 99 3573 99 3574 99 3575 99 3576 99 3577 99 3578 99 3579 99 3580 99 3581 99 3582 99 3583 99 3584 99 3585 99 3586 99 3587 99 3588 99 3589 99 3590 99 3591 99 3592 99 3593 99 3594 99 3595 99 3596 99 3597 99 3598 99 3599 99 3600 99";
     public const String Unlocks2 = "J 3600 99 3601 99 3602 99 3603 99 3604 99 3605 99 3606 99 3607 99 3608 99 3609 99 3610 99 3611 99 3612 99 3613 99 3614 99 3615 99 3616 99 3617 99 3618 99 3619 99 3620 99 3621 99 3622 99 3623 99 3624 99 3625 99 3626 99 3627 99 3628 99 3629 99 3630 99 3631 99 3632 99 3633 99 3634 99 3635 99 3636 99 3637 99 3638 99 3639 99 3640 99 3641 99 3642 99 3643 99 3644 99 3645 99 3646 99 3647 99 3648 99 3649 99 3650 99";
@@ -76,6 +94,7 @@ internal static class Mw2XboxLibConstants
     public const String Unlocks27 = "J 4850 99 4851 99 4852 99 4853 99 4854 99 4855 99 4856 99 4857 99 4858 99 4859 99 4860 99 4861 99 4862 99 4863 99 4864 99 4865 99 4866 99 4867 99 4868 99 4869 99 4870 99 4871 99 4872 99 4873 99 4874 99 4875 99 4876 99 4877 99 4878 99 4879 99 4880 99 4881 99 4882 99 4883 99 4884 99 4885 99 4886 99 4887 99 4888 99 4889 99 4890 99 4891 99 4892 99 4893 99 4894 99 4895 99 4896 99 4897 99 4898 99 4899 99 4900 99";
     public const String Unlocks28 = "J 4900 99 4901 99 4902 99 4903 99 4904 99 4905 99 4906 99 4907 99 4908 99 4909 99 4910 99 4911 99 4912 99 4913 99 4914 99 4915 99 4916 99 4917 99 4918 99 4919 99 4920 99 4921 99 4922 99 4923 99 4924 99 4925 99 4926 99 4927 99 4928 99 4929 99 4930 99 4931 99 4932 99 4933 99 4934 99 4935 99 4936 99 4937 99 4938 99 4939 99 4940 99 4941 99 4942 99 4943 99 4944 99 4945 99 4946 99 4947 99 4948 99 4949 99 4950 99";
     public const String Unlocks29 = "J 4950 99 4951 99 4952 99 4953 99 4954 99 4955 99 4956 99 4957 99 4958 99 4959 99 4960 99 4961 99 4962 99 4963 99 4964 99 4965 99 4966 99 4967 99 4968 99 4969 99 4970 99 4971 99 4972 99 4973 99 4974 99 4975 99 4976 99 4977 99 4978 99 4979 99 4980 99 4981 99 4982 99 4983 99 4984 99 4985 99 4986 99 4987 99 4988 99 4989 99 4990 99 4991 99 4992 99 4993 99 4994 99 4995 99 4996 99 4997 99 4998 99 4999 99 5000 99";
+    #endregion
 
     public static readonly Int32[] LevelTable =
     [
@@ -152,4 +171,21 @@ internal static class Mw2XboxLibConstants
             2516000
         ];
 
+    public static readonly char[] ButtonCharMap =
+    {
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        ''
+    };
 }

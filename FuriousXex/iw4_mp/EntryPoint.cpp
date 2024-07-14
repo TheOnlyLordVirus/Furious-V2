@@ -137,7 +137,6 @@ void R_EndFrame_Detour() {
 	Font_s* font = CL_RegisterFont(FONT_NORMAL, 0);
 	auto material = Material_RegisterHandle(MATERIAL_WHITE, 3);
 
-
 	//DrawShader(screen_res[0] / 2, (screen_res[1] / 2) - (screen_res[1] / 4), 420, 280, colorFadedBlack, MATERIAL_WHITE, ALIGN_CENTER, ALIGN_BOTTOM);
 	//DrawText("", screen_res[0] / 2, (screen_res[1] / 2) - (screen_res[1] / 4) + 40, 0.95f, FONT_NORMAL, colorWhite, ALIGN_CENTER, ALIGN_TOP);
 	//DrawText("", screen_res[0] / 2, (screen_res[1] / 2) - (screen_res[1] / 4) + 290, 0.55f, FONT_NORMAL, colorWhite, ALIGN_CENTER, ALIGN_BOTTOM);
@@ -192,10 +191,10 @@ Detour<void> r_generatesorteddrawsurfs;
 void R_GenerateSortedDrawSurfs_Detour(int viewInfoIndex, GfxSceneParms *sceneParms, GfxViewParms *viewParmsDpvs, GfxViewParms *viewParmsDraw) {
 	if (tog_RGB_light)
 	{
-	for (int i = 0; i < 256; i++) 
-	{
-		sceneParms->primaryLights[i].Color = colorRGB(rainbowRGB.rgb);
-	}
+		for (int i = 0; i < 256; i++) 
+		{
+			sceneParms->primaryLights[i].Color = colorRGB(rainbowRGB.rgb);
+		}
 	}
 	r_generatesorteddrawsurfs.CallOriginal(viewInfoIndex, sceneParms, viewParmsDpvs, viewParmsDraw);
 }
@@ -206,12 +205,14 @@ void R_SetFrameFog_Detour(GfxCmdBufInput *input) {
 	{
 		if (tog_RGB_fog)
 		{
-		GfxBackEndData * backend = (GfxBackEndData*)(input->get<unsigned int>(0x53C));
+			GfxBackEndData * backend = (GfxBackEndData*)(input->get<unsigned int>(0x53C));
 	
-		backend->fogSettings.fogStart = 50.0f;
-		backend->fogSettings.sunFogScale = 8.0f;
-		backend->fogSettings.color = floatColorToUInt(rainbowRGB.rgb);
+			backend->fogSettings.fogStart = 50.0f;
+			backend->fogSettings.sunFogScale = 8.0f;
+			backend->fogSettings.color = floatColorToUInt(rainbowRGB.rgb);
 		}
+
+
 	}
 	r_setframefog.CallOriginal(input);
 }
@@ -221,31 +222,30 @@ void R_AddCmdDrawStretchPic_Hook(float x, float y, float w, float h, float s0, f
 {
 	if (tog_RGB_hud)
 	{
-	//R_AddCmdDrawStretchPic_Detour(&x, &w, col, shader);
-	const float* saveColor = col;
-	color checkColor = (float*)&col;
+		//R_AddCmdDrawStretchPic_Detour(&x, &w, col, shader);
+		const float* saveColor = col;
+		color checkColor = (float*)&col;
 
-	if (strstr(shader->material, "popup"))
-	{
-		col = (float*)&color(255, 0, 0, 255);//saveColor[3] * 255.0f)
-	}
+		if (strstr(shader->material, "popup"))
+		{
+			col = (float*)&color(255, 0, 0, 255);//saveColor[3] * 255.0f)
+		}
 
-	if (!strcmp(shader->material, "mw2_main_cloud_overlay"))// || _sys_strcmp(shader->material, "mw2_main_cloud_overlay")
-	{
-		checkColor.a = 0;
-		col = (float*)&checkColor;
-	}
-	if (!strcmp(shader->material, "mw2_main_background"))
-	{
-		x -= 34;
-		w += (34);
-	}
-	if (colorManager(shader->material, &checkColor))
-	{
-		checkColor.a = saveColor[3];
-		col = (float*)&checkColor;
-	}
-	//DbgPrint("%i %s\n", (int)shader, shader->material);
+		if (!strcmp(shader->material, "mw2_main_cloud_overlay"))// || _sys_strcmp(shader->material, "mw2_main_cloud_overlay")
+		{
+			checkColor.a = 0;
+			col = (float*)&checkColor;
+		}
+		if (!strcmp(shader->material, "mw2_main_background"))
+		{
+			x -= 34;
+			w += (34);
+		}
+		if (colorManager(shader->material, &checkColor))
+		{
+			checkColor.a = saveColor[3];
+			col = (float*)&checkColor;
+		}
 	}
 	r_addCmdDrawStrechPic.CallOriginal(x, y, w, h, s0, t0, s1, t1, col, shader);
 }
@@ -258,6 +258,7 @@ namespace furious
 		CB_fog = 0,
 		CB_light = 1,
 		CB_hud = 2,
+		Aimbot = 3
 	};
 	//temp
 	int memOfs = 0x82D67000;
@@ -292,7 +293,6 @@ namespace furious
 		return *(bool*)getOfs + 3;
 	}
 
-
 	int rCallAddr = 0x82D67100;
 	int callAddr = 0x82D67200;
 	void call(int index, int value)
@@ -320,7 +320,6 @@ namespace furious
 		}
 		return false;
 	}
-	//			//DbgPrint("callBack Xex\n");
 
 	void callBackProcess()
 	{
@@ -335,7 +334,12 @@ namespace furious
 		int callHud;
 		if (callBack(CB_hud, &callHud))
 			tog_RGB_hud = (callHud == 2);
+
+		int callAimbot;
+		if (callBack(CB_hud, &callAimbot))
+			tog_aimbot = (callAimbot == 2);
 	}
+
 	void caller()
 	{
 		if (g(1) == 1)
@@ -362,9 +366,12 @@ void Menu_PaintAll(int a2)
 
 	if (Dvar_GetBool("cl_ingame"))
 	{
-		abStart = true;
-		loopFunc();
-		SetAimbot(abStart);
+		abStart = tog_aimbot;
+		if (tog_aimbot)
+		{
+			loopFunc();
+			SetAimbot(abStart);
+		}
 	}
 
 	menuPaintAll.CallOriginal(a2);

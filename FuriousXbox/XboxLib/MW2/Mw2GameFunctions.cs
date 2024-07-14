@@ -120,7 +120,7 @@ internal static class Mw2GameFunctions
 
     public static void EndGame(IXboxConsole xboxConsole)
     {
-        int client = xboxConsole.ReadInt32(Constants.NonHostEndGame);
+        int client = xboxConsole.ReadInt32(Constants.EndGame);
 
         Cbuf_AddText(xboxConsole!, $"cmd mr {client} -1 endround;");
     }

@@ -98,7 +98,7 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 XboxConsole,
                 G_ClientStructOffset.Redboxes,
                 ClientIndex,
-                onByte: Constants.RedBoxesOn,
+                onByte: Constants.G_ClientRedBoxesOn,
                 cheatName: "Red Boxes"
             );
 
@@ -108,7 +108,7 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 XboxConsole,
                 G_ClientStructOffset.Redboxes,
                 ClientIndex,
-                onByte: Constants.ThermalRedBoxesOn,
+                onByte: Constants.G_ClientThermalRedBoxesOn,
                 cheatName: "Thermal Red Boxes"
             );
 
@@ -118,7 +118,7 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 XboxConsole,
                 G_ClientStructOffset.NoRecoil,
                 ClientIndex,
-                onByte: Constants.NoRecoilOn,
+                onByte: Constants.G_ClientNoRecoilOn,
                 cheatName: "No Recoil"
             );
 
@@ -128,7 +128,7 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 XboxConsole,
                 G_ClientStructOffset.MovementFlag,
                 ClientIndex,
-                onByte: Constants.NoClipOn,
+                onByte: Constants.G_ClientNoClipOn,
                 cheatName: "No Clip"
             );
 
@@ -138,7 +138,7 @@ internal sealed record class G_Client (IXboxConsole XboxConsole, int ClientIndex
                 XboxConsole,
                 G_ClientStructOffset.MovementFlag,
                 ClientIndex,
-                onByte: Constants.UfoModeOn,
+                onByte: Constants.G_ClientUfoModeOn,
                 cheatName: "Ufo Mode"
             );
 

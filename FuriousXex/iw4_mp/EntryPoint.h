@@ -11,3 +11,4 @@
 bool tog_RGB_fog = false;
 bool tog_RGB_light = false;
 bool tog_RGB_hud = false;
+bool tog_aimbot = false;
