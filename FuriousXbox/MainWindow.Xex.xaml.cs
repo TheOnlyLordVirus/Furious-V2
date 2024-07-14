@@ -25,7 +25,7 @@ public sealed partial class MainWindow
 
     private void RGBCheckBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
-        ((ComboBox)sender).SelectedIndex = -1;
+        RGBComboBox.SelectedIndex = -1;
     }
 
     enum CB_Index
