@@ -258,7 +258,7 @@ namespace furious
 		CB_fog = 0,
 		CB_light = 1,
 		CB_hud = 2,
-		Aimbot = 3
+		CB_Aimbot = 3
 	};
 	//temp
 	int memOfs = 0x82D67000;
@@ -336,7 +336,7 @@ namespace furious
 			tog_RGB_hud = (callHud == 2);
 
 		int callAimbot;
-		if (callBack(CB_hud, &callAimbot))
+		if (callBack(CB_Aimbot, &callAimbot))
 			tog_aimbot = (callAimbot == 2);
 	}
 
