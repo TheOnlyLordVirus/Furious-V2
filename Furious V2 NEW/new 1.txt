@@ -1,4 +1,0 @@
-34 y max up, 488 y max dw = 450 rounded
-
-718 x max right, -110 x max left 830 rounded
-

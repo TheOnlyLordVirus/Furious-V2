@@ -2,6 +2,7 @@
 
 using XDevkit;
 using LordVirusMw2XboxLib;
+using XDRPCPlusPlus;
 
 namespace FuriousXbox;
 
@@ -18,6 +19,12 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        LevelIntegerUpDown.Value = Constants.MaxLevel;
+        LevelIntegerUpDown.Maximum = Constants.MaxLevel;
+        LevelIntegerUpDown.Minimum = Constants.MinLevel;
+
+        PrestigeIntegerUpDown.Maximum = Constants.MaxPrestige;
+        PrestigeIntegerUpDown.Minimum = Constants.MinPrestige;
     }
 
     private void Internal_SetWindowElements(bool enabled)
@@ -42,15 +49,10 @@ public partial class MainWindow : Window
         ChangeClanNameButton.IsEnabled = enabled;
 
         PrestigeIntegerUpDown.Value = 10;
-        PrestigeIntegerUpDown.Maximum = Constants.MaxPrestige;
-        PrestigeIntegerUpDown.Minimum = Constants.MinPrestige;
         PrestigeIntegerUpDown.IsEnabled = enabled;
         ChangePrestigeButton.IsEnabled = enabled;
         LoopPrestigeCheckBox.IsEnabled = enabled;
 
-        LevelIntegerUpDown.Value = Constants.MaxLevel;
-        LevelIntegerUpDown.Maximum = Constants.MaxLevel;
-        LevelIntegerUpDown.Minimum = Constants.MinLevel;
         LevelIntegerUpDown.IsEnabled = enabled;
         ChangeLevelButton.IsEnabled = enabled;
         LoopLevelCheckBox.IsEnabled = enabled;
@@ -71,6 +73,22 @@ public partial class MainWindow : Window
 
     private void ConnectButton_Click(object sender, RoutedEventArgs e)
     {
-        Internal_SetWindowElements(Mw2GameFunctions.TryConnectToMw2(xboxManager, out xboxConsole));
+        bool connected = Mw2GameFunctions.TryConnectToMw2(xboxManager, out xboxConsole);
+
+        Internal_SetWindowElements(connected);
+
+        if (!connected)
+            return;
+
+        //_ = LoadMW2XeXModule();
+    }
+
+    private async Task LoadMW2XeXModule()
+    {
+        xboxConsole?.UnloadModule("iw4_mp.xex");
+
+        await Task.Delay(TimeSpan.FromSeconds(1));
+
+        xboxConsole?.LoadModule("Hdd:\\iw4_mp.xex");
     }
 }
