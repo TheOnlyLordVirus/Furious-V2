@@ -5,8 +5,19 @@ namespace FuriousXbox.XboxLib.MW2;
 
 internal sealed class XexManager
 {
-    public static uint callAddr = 0x82D67100;
-    public static uint rCallAddr = 0x82D67200;
+    public enum Callback_Index
+    {
+        fog = 0,
+        light = 1,
+        hud = 2,
+        aimbot = 3
+    }
+
+    public const int call_on = 2;
+    public const int call_off = 1;
+
+    public const uint callAddr = 0x82D67100;
+    public const uint rCallAddr = 0x82D67200;
 
     public static void call(IXboxConsole xbox, int index, int value)
     {

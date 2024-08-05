@@ -11,7 +11,7 @@ using Constants = Mw2XboxLibConstants;
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window
+public sealed partial class MainWindow : Window
 {
     private IXboxManager? xboxManager;
     private IXboxConsole? xboxConsole;
@@ -85,6 +85,8 @@ public partial class MainWindow : Window
 
     private async Task LoadMW2XeXModule()
     {
+        xboxConsole?.SendFile("C:\\Users\\risen\\iw4_mp.xex", "Hdd:\\iw4_mp.xex");
+
         xboxConsole?.UnloadModule("iw4_mp.xex");
 
         await Task.Delay(TimeSpan.FromSeconds(1));

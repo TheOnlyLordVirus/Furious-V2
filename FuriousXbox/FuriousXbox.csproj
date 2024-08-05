@@ -41,6 +41,7 @@
     <Compile Include="XboxLib\MW2\G_ClientComboBoxItem.cs" />
     <Compile Include="XboxLib\MW2\G_ClientLoopingCheat.cs" />
     <Compile Include="XboxLib\MW2\G_ClientStructOffsets.cs" />
+    <Compile Include="XboxLib\MW2\G_Client_DataGridRow.cs" />
     <Compile Include="XboxLib\MW2\IGameCheat.cs" />
     <Compile Include="XboxLib\MW2\Mw2GameFunctions.cs" />
     <Compile Include="XboxLib\MW2\Mw2XboxLibConstants.cs" />

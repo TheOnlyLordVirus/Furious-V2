@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-
 using LordVirusMw2XboxLib;
+using FuriousXbox.XboxLib.MW2;
 
 namespace FuriousXbox;
 
@@ -10,6 +10,7 @@ public sealed partial class MainWindow
 {
     private readonly Task?[] unlockAllTasks = new Task?[Constants.MaxClientCount];
     private readonly G_Client?[] CurrentGameClients = new G_Client?[Constants.MaxClientCount];
+    private readonly G_Client_DataGridRow?[] CurrentGameClientRows = new G_Client_DataGridRow?[Constants.MaxClientCount];
 
     private G_Client? SelectedClient
     {
@@ -20,6 +21,34 @@ public sealed partial class MainWindow
 
             return g_ClientComboBox.Client;
         }
+    }
+
+    private void GodModeEnableCheckBox_Checked(object sender, RoutedEventArgs e)
+    {
+        MessageBox.Show("Hello World");
+    }
+
+    private void GodModeEnableCheckBox_UnChecked(object sender, RoutedEventArgs e)
+    {
+        MessageBox.Show("Goodbye World");
+    }
+
+    private void RefreshClients_Click(object sender, RoutedEventArgs e)
+    {
+        Internal_RefreshClients();
+
+        //for (int clientIndex = 0; clientIndex < Constants.MaxClientCount; ++clientIndex)
+        //{
+        //    CurrentGameClientRows[clientIndex] = new G_Client_DataGridRow
+        //        (
+        //            CurrentGameClients[clientIndex]!.ClientName, 
+        //            new RoutedEventHandler(GodModeEnableCheckBox_Checked), 
+        //            new RoutedEventHandler(GodModeEnableCheckBox_UnChecked)
+        //        );
+
+        //    ClientModDataGrid.Items.Add();
+        //}
+
     }
 
     private void Internal_RefreshClients()

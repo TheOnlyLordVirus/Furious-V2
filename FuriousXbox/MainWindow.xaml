@@ -8,6 +8,22 @@
         mc:Ignorable="d"
         Title="Furious MW2 Xbox Edition" Height="450" Width="800">
 
+    <Window.Resources>
+        <DataTemplate x:Key="G_Client_DataGridRow">
+            <Border BorderThickness="0" Background="BlanchedAlmond" Padding="10">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="16" Text="{Binding ClientName}" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="12" Text="GodMode: " VerticalAlignment="Center" />
+                        <TextBlock FontSize="16" Text="{Binding GodModeCheckBox}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+
 
     <Grid Background="#FFBA2B2B" Margin="0,0,0,-6">
         <TabControl>
@@ -80,11 +96,14 @@
                 </TabItem.Background>
                 <Grid Background="#FF646464">
                     <ComboBox x:Name="ClientComboBox" HorizontalAlignment="Left" Margin="25,26,0,0" VerticalAlignment="Top" Width="120" DropDownOpened="ClientComboBox_DropDownOpened"/>
-                    <Button x:Name="UnlockAllButton" Content="Unlock All" HorizontalAlignment="Left" Margin="25,70,0,0" VerticalAlignment="Top" Width="120" Click="UnlockAllButton_Click"/>
+                    <Button x:Name="UnlockAllButton" Content="Unlock All" HorizontalAlignment="Left" Margin="164,26,0,0" VerticalAlignment="Top" Width="120" Click="UnlockAllButton_Click"/>
 
                     <Label Content="SendGameServerCommand" HorizontalAlignment="Left" Margin="397,30,0,0" VerticalAlignment="Top" Width="176"/>
                     <Button x:Name="SendGameServerCommandButton" IsEnabled="false" Content="Send" HorizontalAlignment="Left" Margin="626,55,0,0" VerticalAlignment="Top" Height="20" Width="113" Click="SendGameServerCommandButton_Click"/>
                     <TextBox x:Name="SendGameServerCommandTextBox" IsEnabled="false" MaxLength="32" HorizontalAlignment="Left" Margin="400,55,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" Height="20"/>
+                    <DataGrid x:Name="ClientModDataGrid" IsReadOnly="True" AutoGenerateColumns="False" RowDetailsTemplate="{StaticResource G_Client_DataGridRow}" Margin="0,92,0,0"/>
+                    
+                    <Button x:Name="RefreshClients" Content="DebugRefresh" HorizontalAlignment="Left" Margin="65,65,0,0" VerticalAlignment="Top" Click="RefreshClients_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>
