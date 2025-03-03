@@ -1,18 +1,8 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 using XDevkit;
 
 namespace XDRPC;
-
-// Token: 0x0200001D RID: 29
-public enum XDRPCPostMethodCall
-{
-    // Token: 0x04000044 RID: 68
-    None,
-    // Token: 0x04000045 RID: 69
-    GetLastError
-}
 
 // Token: 0x02000025 RID: 37
 public class XDRPCReference : IDisposable
@@ -101,7 +91,7 @@ public class XDRPCReference : IDisposable
         Type typeFromHandle = typeof(T);
         this.ValidateType(typeFromHandle, "Set");
         int arrayElementCount = this.GetArrayElementCount(typeFromHandle);
-        XDRPCArgumentInfo lpvBufArg = XDRPCMarshaler.GenerateArgumentInfo(typeFromHandle, data, ArgumentType.ByRef, arrayElementCount);
+        IXDRPCArgumentInfo lpvBufArg = XDRPCMarshaler.GenerateArgumentInfo(typeFromHandle, data, ArgumentType.ByRef, arrayElementCount);
         this.Set(lpvBufArg);
     }
 
@@ -110,7 +100,7 @@ public class XDRPCReference : IDisposable
     {
         this.ValidatePointer("Set");
         int stringBufferSize = this.GetStringBufferSize(encoding);
-        XDRPCArgumentInfo lpvBufArg = new XDRPCStringArgumentInfo(str, encoding, ArgumentType.ByRef, stringBufferSize, CountType.Byte);
+        IXDRPCArgumentInfo lpvBufArg = new XDRPCStringArgumentInfo(str, encoding, ArgumentType.ByRef, stringBufferSize, CountType.Byte);
         this.Set(lpvBufArg);
     }
 
@@ -121,7 +111,7 @@ public class XDRPCReference : IDisposable
         Type typeFromHandle = typeof(T);
         this.ValidateType(typeFromHandle, "Get");
         int arrayElementCount = this.GetArrayElementCount(typeFromHandle);
-        XDRPCArgumentInfo xdrpcargumentInfo = XDRPCMarshaler.GenerateArgumentInfo(typeFromHandle, default(T), ArgumentType.Out, arrayElementCount);
+        IXDRPCArgumentInfo xdrpcargumentInfo = XDRPCMarshaler.GenerateArgumentInfo(typeFromHandle, default(T), ArgumentType.Out, arrayElementCount);
         this.Get(xdrpcargumentInfo);
         return (T)((object)XDRPCMarshaler.GetArgumentInfoValue(typeFromHandle, xdrpcargumentInfo));
     }
@@ -172,7 +162,7 @@ public class XDRPCReference : IDisposable
     }
 
     // Token: 0x0600018C RID: 396 RVA: 0x00006BF4 File Offset: 0x00005BF4
-    private int ValidateSize(XDRPCArgumentInfo lpvBufArg, string msgType)
+    private int ValidateSize(IXDRPCArgumentInfo lpvBufArg, string msgType)
     {
         int requiredBufferSize = lpvBufArg.GetRequiredBufferSize();
         if (requiredBufferSize > this.BufferSize)
@@ -205,14 +195,14 @@ public class XDRPCReference : IDisposable
     }
 
     // Token: 0x0600018F RID: 399 RVA: 0x00006C94 File Offset: 0x00005C94
-    private void Set(XDRPCArgumentInfo lpvBufArg)
+    private void Set(IXDRPCArgumentInfo lpvBufArg)
     {
         int num = this.ValidateSize(lpvBufArg, "Set");
         XDRPCExecutionOptions options = new XDRPCExecutionOptions(XDRPCMode.System, "xbdm.xex", 40);
         XDRPCArgumentInfo<uint> argumentInfo = this.GetArgumentInfo();
         XDRPCArgumentInfo<int> xdrpcargumentInfo = new XDRPCArgumentInfo<int>(num);
         XDRPCArgumentInfo<int> xdrpcargumentInfo2 = new XDRPCArgumentInfo<int>(0, ArgumentType.Out);
-        int hr = this.XboxConsole.ExecuteRPC<int>(options, new XDRPCArgumentInfo[]
+        int hr = this.XboxConsole.ExecuteRPC<int>(options, new IXDRPCArgumentInfo[]
         {
             argumentInfo,
             xdrpcargumentInfo,
@@ -224,14 +214,14 @@ public class XDRPCReference : IDisposable
     }
 
     // Token: 0x06000190 RID: 400 RVA: 0x00006D20 File Offset: 0x00005D20
-    private void Get(XDRPCArgumentInfo lpvBufArg)
+    private void Get(IXDRPCArgumentInfo lpvBufArg)
     {
         int num = this.ValidateSize(lpvBufArg, "Get");
         XDRPCExecutionOptions options = new XDRPCExecutionOptions(XDRPCMode.System, "xbdm.xex", 10);
         XDRPCArgumentInfo<uint> argumentInfo = this.GetArgumentInfo();
         XDRPCArgumentInfo<int> xdrpcargumentInfo = new XDRPCArgumentInfo<int>(num);
         XDRPCArgumentInfo<int> xdrpcargumentInfo2 = new XDRPCArgumentInfo<int>(0, ArgumentType.Out);
-        int hr = this.XboxConsole.ExecuteRPC<int>(options, new XDRPCArgumentInfo[]
+        int hr = this.XboxConsole.ExecuteRPC<int>(options, new IXDRPCArgumentInfo[]
         {
             argumentInfo,
             xdrpcargumentInfo,

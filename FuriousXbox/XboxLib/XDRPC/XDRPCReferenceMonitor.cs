@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
+
 using XDevkit;
 
 namespace XDRPC;
@@ -83,17 +82,17 @@ public static class XDRPCReferenceMonitor
     }
 
     // Token: 0x06000197 RID: 407 RVA: 0x00007015 File Offset: 0x00006015
-    public static XDRPCReference AllocateRPC(this IXboxConsole console, XDRPCArgumentInfo lpvBufArg)
+    public static XDRPCReference AllocateRPC(this IXboxConsole console, IXDRPCArgumentInfo lpvBufArg)
     {
         return console.AllocateRPC(lpvBufArg, XDRPCMode.System);
     }
 
     // Token: 0x06000198 RID: 408 RVA: 0x0000701F File Offset: 0x0000601F
-    public static XDRPCReference AllocateRPC(this IXboxConsole console, XDRPCArgumentInfo lpvBufArg, XDRPCMode mode)
+    public static XDRPCReference AllocateRPC(this IXboxConsole console, IXDRPCArgumentInfo lpvBufArg, XDRPCMode mode)
     {
         if (lpvBufArg.PassBy == ArgumentType.ByValue)
         {
-            throw new XDRPCInvalidOperationException("Allocating XDRPCArgumentInfo with ByValue argument type is not allowed.");
+            throw new XDRPCInvalidOperationException("Allocating IXDRPCArgumentInfo with ByValue argument type is not allowed.");
         }
         if (lpvBufArg.GetRequiredReferenceSize() > 0)
         {
@@ -116,7 +115,7 @@ public static class XDRPCReferenceMonitor
         {
             throw new XDRPCInvalidTypeException(typeFromHandle, string.Format("Invalid type {0}: Cannot allocate type not supported by XDRPC.", typeFromHandle.Name));
         }
-        XDRPCArgumentInfo lpvBufArg = XDRPCMarshaler.GenerateArgumentInfo(typeFromHandle, default(T), ArgumentType.ByRef);
+        IXDRPCArgumentInfo lpvBufArg = XDRPCMarshaler.GenerateArgumentInfo(typeFromHandle, default(T), ArgumentType.ByRef);
         return console.AllocateRPC(lpvBufArg, mode);
     }
 

@@ -47,8 +47,13 @@
     <Compile Include="XboxLib\MW2\Mw2XboxLibConstants.cs" />
     <Compile Include="XboxLib\MW2\PlayerWeaponStructTesting.cs" />
     <Compile Include="XboxLib\MW2\XexManager.cs" />
+    <Compile Include="XboxLib\XDRPC\ArgumentType.cs" />
+    <Compile Include="XboxLib\XDRPC\CountType.cs" />
+    <Compile Include="XboxLib\XDRPC\IXDRPCArgumentInfo.cs" />
     <Compile Include="XboxLib\XDRPC\MarshalingUtils.cs" />
+    <Compile Include="XboxLib\XDRPC\RPCEventHandler.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCArgumentInfo.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCArrayArgumentInfo.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCException.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCExecutionOptions.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCExecutionState.cs" />
@@ -60,14 +65,20 @@
     <Compile Include="XboxLib\XDRPC\XDRPCInvalidTypeException.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCInvocationFailedException.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCMarshaler.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCMode.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCModuleNotFoundException.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCNotSupportedException.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCNullArgumentInfo.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCPlusPlus\XDRPCPlusPlus.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="XboxLib\XDRPC\XDRPCPostMethodCall.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCReference.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCReferenceMonitor.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCSizeOfArgumentInfo.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCStringArgumentInfo.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCStructArgumentInfo.cs" />
+    <Compile Include="XboxLib\XDRPC\XDRPCStructAttribute.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCTimeoutException.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCTooManyArgumentsException.cs" />
     <Compile Include="XboxLib\XDRPC\XDRPCUnionAttribute.cs" />

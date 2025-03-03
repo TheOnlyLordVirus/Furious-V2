@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace XDRPC;
+﻿namespace XDRPC;
 
 // Token: 0x02000019 RID: 25
 public class XDRPCModuleNotFoundException : XDRPCException

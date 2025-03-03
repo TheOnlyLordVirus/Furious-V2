@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-
-namespace XDRPC;
+﻿namespace XDRPC;
 
 // Token: 0x02000010 RID: 16
 public class XDRPCException : Exception

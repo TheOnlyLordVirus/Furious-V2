@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace XDRPC;
+﻿namespace XDRPC;
 
 // Token: 0x02000017 RID: 23
 public class XDRPCInvalidResponseException : XDRPCException

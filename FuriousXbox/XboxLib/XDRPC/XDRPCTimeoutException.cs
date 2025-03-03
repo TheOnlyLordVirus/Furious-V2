@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace XDRPC;
+﻿namespace XDRPC;
 
 // Token: 0x0200001B RID: 27
 public class XDRPCTimeoutException : XDRPCException

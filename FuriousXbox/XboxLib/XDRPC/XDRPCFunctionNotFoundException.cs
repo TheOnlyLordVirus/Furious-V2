@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace XDRPC;
+﻿namespace XDRPC;
 
 // Token: 0x0200001A RID: 26
 public class XDRPCFunctionNotFoundException : XDRPCException

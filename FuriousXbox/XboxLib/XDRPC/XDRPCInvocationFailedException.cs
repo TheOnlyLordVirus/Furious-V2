@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace XDRPC;
+﻿namespace XDRPC;
 
 // Token: 0x02000018 RID: 24
 public class XDRPCInvocationFailedException : XDRPCException

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 using XDevkit;
 
@@ -14,14 +11,14 @@ namespace XDRPC;
 internal class XDRPCExecutionState
 {
     // Token: 0x06000144 RID: 324 RVA: 0x000051C4 File Offset: 0x000041C4
-    internal XDRPCExecutionState(IXboxConsole console, XDRPCExecutionOptions options, XDRPCArgumentInfo[] arguments, XDRPCExecutionState.XDRPCCallFlags flags)
+    internal XDRPCExecutionState(IXboxConsole console, XDRPCExecutionOptions options, IXDRPCArgumentInfo[] arguments, XDRPCExecutionState.XDRPCCallFlags flags)
     {
         this.Console = console;
         this.Options = options;
         this.ReturnValue = 0UL;
         this.PostMethodCallReturnValue = 0UL;
         this.callFlags = flags;
-        List<XDRPCArgumentInfo> list = new List<XDRPCArgumentInfo>();
+        List<IXDRPCArgumentInfo> list = new List<IXDRPCArgumentInfo>();
         for (int i = 0; i < arguments.Length; i++)
         {
             if (arguments[i].IsFloatingPointValue())
@@ -563,10 +560,10 @@ internal class XDRPCExecutionState
     private XDRPCExecutionOptions Options;
 
     // Token: 0x04000072 RID: 114
-    private XDRPCArgumentInfo[] IntegerArguments;
+    private IXDRPCArgumentInfo[] IntegerArguments;
 
     // Token: 0x04000073 RID: 115
-    private XDRPCArgumentInfo[] FloatingPointArguments;
+    private IXDRPCArgumentInfo[] FloatingPointArguments;
 
     // Token: 0x04000074 RID: 116
     private XDRPCExecutionState.ArgumentBufferData[] bufferData;

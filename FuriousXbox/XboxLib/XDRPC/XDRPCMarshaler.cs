@@ -1,8 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
@@ -10,22 +6,13 @@ using XDevkit;
 
 namespace XDRPC;
 
-// Token: 0x0200001C RID: 28
-public enum XDRPCMode
-{
-    // Token: 0x04000041 RID: 65
-    System,
-    // Token: 0x04000042 RID: 66
-    Title
-}
-
 // Token: 0x02000024 RID: 36
 public static class XDRPCMarshaler
 {
     // Token: 0x06000159 RID: 345 RVA: 0x00005F54 File Offset: 0x00004F54
-    private static XDRPCArgumentInfo[] GenerateArgumentInfoArray(params object[] args)
+    private static IXDRPCArgumentInfo[] GenerateArgumentInfoArray(params object[] args)
     {
-        XDRPCArgumentInfo[] array = new XDRPCArgumentInfo[args.Length];
+        IXDRPCArgumentInfo[] array = new IXDRPCArgumentInfo[args.Length];
         for (int i = 0; i < args.Length; i++)
         {
             object obj = args[i];
@@ -36,9 +23,9 @@ public static class XDRPCMarshaler
             else
             {
                 Type type = obj.GetType();
-                if (typeof(XDRPCArgumentInfo).IsAssignableFrom(type))
+                if (typeof(IXDRPCArgumentInfo).IsAssignableFrom(type))
                 {
-                    array[i] = (XDRPCArgumentInfo)obj;
+                    array[i] = (IXDRPCArgumentInfo)obj;
                 }
                 else
                 {
@@ -57,7 +44,7 @@ public static class XDRPCMarshaler
     public static T ExecuteRPC<T>(this IXboxConsole console, XDRPCMode mode, string module, int ordinal, params object[] args) where T : struct
     {
         XDRPCExecutionOptions options = new XDRPCExecutionOptions(mode, module, ordinal);
-        XDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
+        IXDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
         return console.ExecuteRPC<T>(options, args2);
     }
 
@@ -65,7 +52,7 @@ public static class XDRPCMarshaler
     public static T ExecuteRPC<T>(this IXboxConsole console, string threadName, string module, int ordinal, params object[] args) where T : struct
     {
         XDRPCExecutionOptions options = new XDRPCExecutionOptions(threadName, module, ordinal);
-        XDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
+        IXDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
         return console.ExecuteRPC<T>(options, args2);
     }
 
@@ -73,7 +60,7 @@ public static class XDRPCMarshaler
     public static T ExecuteRPC<T>(this IXboxConsole console, string threadName, string module, int ordinal, out ulong postMethodCallReturn, params object[] args) where T : struct
     {
         XDRPCExecutionOptions options = new XDRPCExecutionOptions(threadName, module, ordinal);
-        XDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
+        IXDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
         return console.ExecuteRPC<T>(options, out postMethodCallReturn, args2);
     }
 
@@ -81,7 +68,7 @@ public static class XDRPCMarshaler
     public static T ExecuteRPC<T>(this IXboxConsole console, XDRPCMode mode, string module, string functionName, params object[] args) where T : struct
     {
         XDRPCExecutionOptions options = new XDRPCExecutionOptions(mode, module, functionName);
-        XDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
+        IXDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
         return console.ExecuteRPC<T>(options, args2);
     }
 
@@ -89,7 +76,7 @@ public static class XDRPCMarshaler
     public static T ExecuteRPC<T>(this IXboxConsole console, string threadName, string module, string functionName, params object[] args) where T : struct
     {
         XDRPCExecutionOptions options = new XDRPCExecutionOptions(threadName, module, functionName);
-        XDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
+        IXDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
         return console.ExecuteRPC<T>(options, args2);
     }
 
@@ -97,7 +84,7 @@ public static class XDRPCMarshaler
     public static T ExecuteRPC<T>(this IXboxConsole console, string threadName, string module, string functionName, out ulong postMethodCallReturn, params object[] args) where T : struct
     {
         XDRPCExecutionOptions options = new XDRPCExecutionOptions(threadName, module, functionName);
-        XDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
+        IXDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
         return console.ExecuteRPC<T>(options, out postMethodCallReturn, args2);
     }
 
@@ -105,7 +92,7 @@ public static class XDRPCMarshaler
     public static T ExecuteRPC<T>(this IXboxConsole console, XDRPCMode mode, uint functionAddress, params object[] args) where T : struct
     {
         XDRPCExecutionOptions options = new XDRPCExecutionOptions(mode, functionAddress);
-        XDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
+        IXDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
         return console.ExecuteRPC<T>(options, args2);
     }
 
@@ -113,7 +100,7 @@ public static class XDRPCMarshaler
     public static T ExecuteRPC<T>(this IXboxConsole console, string threadName, uint functionAddress, params object[] args) where T : struct
     {
         XDRPCExecutionOptions options = new XDRPCExecutionOptions(threadName, functionAddress);
-        XDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
+        IXDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
         return console.ExecuteRPC<T>(options, args2);
     }
 
@@ -121,26 +108,26 @@ public static class XDRPCMarshaler
     public static T ExecuteRPC<T>(this IXboxConsole console, string threadName, uint functionAddress, out ulong postMethodCallReturn, params object[] args) where T : struct
     {
         XDRPCExecutionOptions options = new XDRPCExecutionOptions(threadName, functionAddress);
-        XDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
+        IXDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
         return console.ExecuteRPC<T>(options, out postMethodCallReturn, args2);
     }
 
     // Token: 0x06000163 RID: 355 RVA: 0x0000612C File Offset: 0x0000512C
     public static T ExecuteRPC<T>(this IXboxConsole console, XDRPCExecutionOptions options) where T : struct
     {
-        XDRPCArgumentInfo[] args = new XDRPCArgumentInfo[0];
+        IXDRPCArgumentInfo[] args = new IXDRPCArgumentInfo[0];
         return console.ExecuteRPC<T>(options, args);
     }
 
     // Token: 0x06000164 RID: 356 RVA: 0x00006148 File Offset: 0x00005148
     public static T ExecuteRPC<T>(this IXboxConsole console, XDRPCExecutionOptions options, params object[] args) where T : struct
     {
-        XDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
+        IXDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
         return console.ExecuteRPC<T>(options, args2);
     }
 
     // Token: 0x06000165 RID: 357 RVA: 0x00006164 File Offset: 0x00005164
-    public static T ExecuteRPC<T>(this IXboxConsole console, XDRPCExecutionOptions options, params XDRPCArgumentInfo[] args) where T : struct
+    public static T ExecuteRPC<T>(this IXboxConsole console, XDRPCExecutionOptions options, params IXDRPCArgumentInfo[] args) where T : struct
     {
         ulong num;
         return console.ExecuteRPC<T>(options, out num, args);
@@ -149,19 +136,19 @@ public static class XDRPCMarshaler
     // Token: 0x06000166 RID: 358 RVA: 0x0000617C File Offset: 0x0000517C
     public static T ExecuteRPC<T>(this IXboxConsole console, XDRPCExecutionOptions options, out ulong postMethodCallReturn) where T : struct
     {
-        XDRPCArgumentInfo[] args = new XDRPCArgumentInfo[0];
+        IXDRPCArgumentInfo[] args = new IXDRPCArgumentInfo[0];
         return console.ExecuteRPC<T>(options, out postMethodCallReturn, args);
     }
 
     // Token: 0x06000167 RID: 359 RVA: 0x0000619C File Offset: 0x0000519C
     public static T ExecuteRPC<T>(this IXboxConsole console, XDRPCExecutionOptions options, out ulong postMethodCallReturn, params object[] args) where T : struct
     {
-        XDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
+        IXDRPCArgumentInfo[] args2 = XDRPCMarshaler.GenerateArgumentInfoArray(args);
         return console.ExecuteRPC<T>(options, out postMethodCallReturn, args2);
     }
 
     // Token: 0x06000168 RID: 360 RVA: 0x000061BC File Offset: 0x000051BC
-    public static T ExecuteRPC<T>(this IXboxConsole console, XDRPCExecutionOptions options, out ulong postMethodCallReturn, params XDRPCArgumentInfo[] args) where T : struct
+    public static T ExecuteRPC<T>(this IXboxConsole console, XDRPCExecutionOptions options, out ulong postMethodCallReturn, params IXDRPCArgumentInfo[] args) where T : struct
     {
         Type typeFromHandle = typeof(T);
         postMethodCallReturn = 0UL;
@@ -170,7 +157,7 @@ public static class XDRPCMarshaler
             if (typeFromHandle.IsValueType)
             {
                 XDRPCStructArgumentInfo<T> xdrpcstructArgumentInfo = new XDRPCStructArgumentInfo<T>(default(T), ArgumentType.Out);
-                XDRPCArgumentInfo[] array = new XDRPCArgumentInfo[args.Length + 1];
+                IXDRPCArgumentInfo[] array = new IXDRPCArgumentInfo[args.Length + 1];
                 array[0] = xdrpcstructArgumentInfo;
                 Array.Copy(args, 0, array, 1, args.Length);
                 console.ExecuteRPC<T>(options, array);
@@ -255,27 +242,27 @@ public static class XDRPCMarshaler
     }
 
     // Token: 0x0600016F RID: 367 RVA: 0x00006376 File Offset: 0x00005376
-    internal static XDRPCArgumentInfo GenerateArgumentInfo(Type t, object o)
+    internal static IXDRPCArgumentInfo GenerateArgumentInfo(Type t, object o)
     {
         return XDRPCMarshaler.GenerateArgumentInfo(t, o, ArgumentType.ByValue);
     }
 
     // Token: 0x06000170 RID: 368 RVA: 0x00006380 File Offset: 0x00005380
-    internal static XDRPCArgumentInfo GenerateArgumentInfo(Type t, object o, ArgumentType at)
+    internal static IXDRPCArgumentInfo GenerateArgumentInfo(Type t, object o, ArgumentType at)
     {
         return XDRPCMarshaler.GenerateArgumentInfo(t, o, at, 0);
     }
 
     // Token: 0x06000171 RID: 369 RVA: 0x0000638B File Offset: 0x0000538B
-    internal static XDRPCArgumentInfo GenerateArgumentInfo(Type t, object o, ArgumentType at, int size)
+    internal static IXDRPCArgumentInfo GenerateArgumentInfo(Type t, object o, ArgumentType at, int size)
     {
         return XDRPCMarshaler.GenerateArgumentInfo(t, o, at, size, Encoding.ASCII);
     }
 
     // Token: 0x06000172 RID: 370 RVA: 0x0000639C File Offset: 0x0000539C
-    internal static XDRPCArgumentInfo GenerateArgumentInfo(Type t, object o, ArgumentType at, int size, Encoding encoding)
+    internal static IXDRPCArgumentInfo GenerateArgumentInfo(Type t, object o, ArgumentType at, int size, Encoding encoding)
     {
-        XDRPCArgumentInfo result = null;
+        IXDRPCArgumentInfo result = null;
         if (t.IsPrimitive || t.IsValueType)
         {
             Type type;
@@ -298,7 +285,7 @@ public static class XDRPCMarshaler
                 t,
                 typeof(ArgumentType)
             });
-            result = (XDRPCArgumentInfo)constructor.Invoke(new object[]
+            result = (IXDRPCArgumentInfo)constructor.Invoke(new object[]
             {
                 o,
                 at
@@ -316,7 +303,7 @@ public static class XDRPCMarshaler
                 typeof(ArgumentType),
                 typeof(int)
             });
-            result = (XDRPCArgumentInfo)constructor2.Invoke(new object[]
+            result = (IXDRPCArgumentInfo)constructor2.Invoke(new object[]
             {
                 o,
                 at,
@@ -331,7 +318,7 @@ public static class XDRPCMarshaler
     }
 
     // Token: 0x06000173 RID: 371 RVA: 0x00006508 File Offset: 0x00005508
-    internal static object GetArgumentInfoValue(Type t, XDRPCArgumentInfo argInfo)
+    internal static object GetArgumentInfoValue(Type t, IXDRPCArgumentInfo argInfo)
     {
         object result = null;
         if (typeof(string) == t)
